@@ -23,7 +23,6 @@ export default async function PostPage({ params: { slug } }: PostPageProps) {
       <DraftTag draft={draft} className="mb-4" />
       <PostHeader title={title} description={description} />
       <div className="prose dark:prose-invert">
-        {/* @ts-expect-error awaitable component */}
         <CustomMDX source={post.content} />
       </div>
     </>

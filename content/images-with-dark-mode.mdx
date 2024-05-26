@@ -1,0 +1,81 @@
+---
+title: "Images with Dark Mode"
+description: "Images with Dark Mode (and blurred previews)"
+date: "2024-02-06T12:00:00Z"
+readingTime: 10
+tags:
+  - "React"
+  - "Images"
+  - "Dark Mode"
+  - "SSR"
+---
+
+When making this blog, I wanted to respect the color scheme selected by the visitor. Luckily CSS makes this quite easy via the `prefers-color-scheme` media query. But then, when I was writing the post about [React Server Components](/blog/react-server-components), I noticed that light themed images where pretty harsh in dark mode.
+
+<Image
+  className="rounded"
+  src="/images/harsh-image.png"
+  alt="Harsh image in dark mode"
+  priority
+  width={2216}
+  height={1338}
+/>
+
+There are a couple of tricks that I could use to make the images less harsh, like adding `filter: brightness(0.5)` to the image for example. But that felt like an afterthought. I am in control of the images here, so I could easily make two variants of the same image. One for light mode and one for dark mode.
+
+## The source tag
+
+Now I'm not the first one to think of this, so a quick chat with Github Copilot resulted in the following code.
+
+```html
+<picture>
+  <source srcset="image-dark.jpg" media="(prefers-color-scheme: dark)" />
+  <img src="image-light.jpg" alt="Description of the image" />
+</picture>
+```
+
+This will automaticly switch the source of the image based on the preferred color scheme. No javascript required. Cool stuff.
+
+### About server side rendering
+
+There is not Javascript logic for our current implementation, this means SSR is supported out-of-the-box.
+
+The source can only be swapped based on a media query, not based on a class or data-attribute like `[data-theme="dark"]` or something.
+This means SSR is supported out-of-the-box.
+
+Implementing a theme toggle would require some .
+
+## Further optimization
+
+When a user has a bad connection, loading a image will look like this.
+
+.. movie of loading image ..
+
+There are a couple of things we can improve this, I chose the following:
+
+1. Preventing the layout shift.
+2. Adding a blurred preview.
+
+### Preventing the layout shift.
+
+Because I am in control of the images, I know the width and height of the images. If I simply add the `width` and `height` to the `img` tag I can prevent the layout shift.
+
+```html
+<picture>
+  <source srcset="image-dark.jpg" media="(prefers-color-scheme: dark)" />
+  <img
+    src="image-light.jpg"
+    alt="Description of the image"
+    width="1600"
+    height="900"
+  />
+</picture>
+```
+
+Now the image will always render with a 16 / 9 aspect ratio and the layout shift will be gone.
+
+.. movie of loading without layout shift ..
+
+### Blurred previews.
+
+So we prevented the layout shift, but we still see a large empty space while the image is loading. A popular pattern for this is to show a blurred preview of the image.

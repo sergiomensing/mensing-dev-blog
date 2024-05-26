@@ -22,3 +22,11 @@ export const getAllPosts = async () => {
     return { frontmatter: parsedFrontmatter, content, slug };
   });
 };
+
+export const draftFilter = (post: { frontmatter: { draft: boolean } }) => {
+  if (process.env.NODE_ENV === "production") {
+    return !post.frontmatter.draft;
+  }
+
+  return true;
+};

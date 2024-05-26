@@ -23,8 +23,13 @@ export function parseFrontmatter(fileContent: string) {
 
   frontMatterLines.forEach((line) => {
     const [key, ...valueArr] = line.split(": ");
-    let value = valueArr.join(": ").trim();
+    let value: any = valueArr.join(": ").trim();
     value = value.replace(/^['"](.*)['"]$/, "$1"); // Remove quotes
+
+    // check for booleans
+    if (value === "true") value = true;
+    if (value === "false") value = false;
+
     frontmatter[key.trim()] = value;
   });
 

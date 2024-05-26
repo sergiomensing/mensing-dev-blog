@@ -1,7 +1,8 @@
-import { getAllPosts } from "@/posts";
+import { draftFilter, getAllPosts } from "@/posts";
 import { notFound } from "next/navigation";
 import { PostHeader } from "./post-header";
 import { CustomMDX } from "./mdx";
+import { DraftTag } from "@/components/draft-tag";
 
 export type PostPageProps = {
   params: {
@@ -11,7 +12,7 @@ export type PostPageProps = {
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {
   const post = (await getAllPosts()).find((post) => post.slug === slug);
-  if (!post) {
+  if (!post || !draftFilter(post)) {
     return notFound();
   }
 
@@ -19,11 +20,7 @@ export default async function PostPage({ params: { slug } }: PostPageProps) {
 
   return (
     <>
-      {draft && (
-        <span className="bg-blue-100 text-blue-800 px-1 py-0.5 mb-4 inline-flex rounded font-medium text-sm">
-          DRAFT
-        </span>
-      )}
+      <DraftTag draft={draft} className="mb-4" />
       <PostHeader title={title} description={description} />
       <div className="prose dark:prose-invert">
         {/* @ts-expect-error awaitable component */}

@@ -1,5 +1,6 @@
 import path from "node:path";
 import fs from "node:fs/promises";
+import { parse } from "yaml";
 
 export async function getMDXFilePaths(dir: string) {
   const dirents = await fs.readdir(dir, { withFileTypes: true });
@@ -18,21 +19,7 @@ export function parseFrontmatter(fileContent: string) {
   const match = frontmatterRegex.exec(fileContent);
   const frontMatterBlock = match![1];
   const content = fileContent.replace(frontmatterRegex, "").trim();
-  const frontMatterLines = frontMatterBlock.trim().split("\n");
-  const frontmatter: { [x: string]: any } = {};
-
-  frontMatterLines.forEach((line) => {
-    const [key, ...valueArr] = line.split(": ");
-    let value: any = valueArr.join(": ").trim();
-    value = value.replace(/^['"](.*)['"]$/, "$1"); // Remove quotes
-
-    // check for booleans
-    if (value === "true") value = true;
-    if (value === "false") value = false;
-
-    frontmatter[key.trim()] = value;
-  });
-
+  const frontmatter = parse(frontMatterBlock);
   return { frontmatter, content };
 }
 

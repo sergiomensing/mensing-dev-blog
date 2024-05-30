@@ -6,7 +6,8 @@ export const contentDir = path.join(process.cwd(), "content");
 export const postFrontmatterSchema = z.object({
   title: z.string(),
   description: z.string(),
-  date: z.string(),
+  date: z.string().date(),
+  modified: z.string().date().optional(),
   draft: z.boolean().default(false),
   tags: z.array(z.string()).optional(),
   readTime: z.number().optional(),

@@ -12,6 +12,7 @@ export type PostPageProps = {
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {
   const post = (await getAllPosts()).find((post) => post.slug === slug);
+
   if (!post || !draftFilter(post)) {
     return notFound();
   }

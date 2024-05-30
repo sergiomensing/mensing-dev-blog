@@ -71,6 +71,7 @@ export async function CustomMDX(props: { source: string }) {
   const { default: MDXContent } = await evaluate(props.source, runtime);
   return (
     <>
+      {/* @ts-ignore */}
       <MDXContent components={components} />
     </>
   );

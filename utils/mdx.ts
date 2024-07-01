@@ -25,9 +25,7 @@ export function parseFrontmatter(fileContent: string) {
 
 export function getMDXData(dir: string) {
   return async function (filePath: string) {
-    const { frontmatter, content } = await readMDXFile(
-      path.join(dir, filePath)
-    );
+    const { frontmatter, content } = await readMDXFile(path.join(dir, filePath));
     const slug = path.basename(filePath, path.extname(filePath));
     return { frontmatter, content, slug };
   };

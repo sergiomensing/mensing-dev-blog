@@ -177,9 +177,7 @@ Yes this is JavaScript but the component is always static. It has some slots whe
 ```jsx
 import CodeHighlighter from "expensive-library";
 
-export const HighlightJSX = (props) => (
-  <CodeHighlighter code={props.code} language="jsx" />
-);
+export const HighlightJSX = (props) => <CodeHighlighter code={props.code} language="jsx" />;
 ```
 
 There is probably a lot of javascript needed to calculate the code highlighting. But the output remains static. There is no user interactivity. Basically we are sending unnecessary javascript to the client.

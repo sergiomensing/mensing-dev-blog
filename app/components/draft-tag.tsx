@@ -1,10 +1,9 @@
-export const DraftTag = ({
-  draft,
-  className = "",
-}: {
+export type DraftTagProps = {
   draft: boolean;
   className?: string;
-}) => {
+};
+
+export const DraftTag = ({ draft, className = "" }: DraftTagProps) => {
   if (!draft) return null;
 
   return (

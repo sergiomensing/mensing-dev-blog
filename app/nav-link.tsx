@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { ComponentProps } from "react";
 
-export const NavLink = ({
-  className,
-  children,
-  ...rest
-}: ComponentProps<typeof Link>) => {
+export const NavLink = (props: ComponentProps<typeof Link>) => {
+  const { className, children, ...rest } = props;
+
   return (
     <Link className={`hover:text-orange-600 ${className}`.trim()} {...rest}>
       {children}

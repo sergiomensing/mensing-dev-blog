@@ -1,0 +1,256 @@
+---
+draft: true
+title: "Non-styled component libraries"
+description: "Bring your owns UI design"
+date: "2024-07-01"
+readingTime: 10
+tags:
+  - "UI/UX"
+  - "Design Systems"
+sources:
+  - title: "Bootstrap"
+    url: "https://getbootstrap.com/"
+  - title: "Headless UI"
+    url: "https://headlessui.com/"
+  - title: "React Aria"
+    url: "https://react-spectrum.adobe.com/react-aria/"
+  - title: "Reach UI"
+    url: "https://reach.tech/"
+  - title: "So You Think You Can Build A Dropdown?"
+    url: "https://www.youtube.com/watch?v=pcMYcjtWwVI"
+---
+
+So, what happens when your product owner or designer proposes a feature like this. You must be able to select a user and see their job title.
+
+![A screenshot of a custom dropdown component](/images/custom-dropdown.jpg)
+
+You might push back a bit, but the PO is adamant. They want this component, and they want it now!
+
+Most people would consider one of two solutions:
+
+1. Use a component library like Material UI and modify the appearance to match the design.
+2. Build the component from scratch.
+
+## Understanding the problem
+
+Both of these solutions come with their own set of challenges. Let’s start with the first approach.
+
+### Using a Component Library
+
+Component libraries offer several benefits:
+
+- Consistent design
+- Accessibility
+- Fast shipping
+
+Most libraries allow you to customize their branding using themes. This works well, but much like good ol’ <Source index={0}>Bootstrap</Source>, there are always recognisable elements that are either unmodifiable or very difficult to change.
+
+If you're like me, you often find yourself battling the library more than using it—overriding styles, dealing with missing features in the component API, etc. You strive to create the best experience for your users, but the component library is holding you back.
+
+I gave Material UI a shot by trying to build the component mentioned above. This is the code I ended up with.
+
+```tsx
+import { useState } from "react";
+import { Select, SelectChangeEvent, MenuItem, Avatar } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { people } from "./data";
+
+export const CustomSelect = styled(Select<(typeof people)[0]>)(({ theme }) => ({
+  fontSize: "0.875rem",
+  width: "min(40ch, 100%)",
+
+  "& .MuiInputBase-input": {
+    borderRadius: 6,
+    backgroundColor: theme.palette.background.paper,
+    padding: "0.375rem 0.75rem",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.375rem",
+  },
+  "& .MuiSelect-icon": {
+    display: "none",
+  },
+  "& .MuiAvatar-root": {
+    marginInlineStart: "-0.25rem",
+    width: "2em",
+    height: "2em",
+  },
+  "& .MuiMenuItem-root": {
+    gap: "0.375rem",
+    fontSize: "0.875rem",
+  },
+  "& .job-title": {
+    marginInlineStart: "auto",
+  },
+}));
+
+export const ListboxMaterial = () => {
+  const [selectedPerson, setSelectedPerson] = useState(people[0]);
+
+  const handleOnChange = (event: SelectChangeEvent<(typeof people)[number]>) => {
+    const {
+      target: { value },
+    } = event;
+
+    // On autofill we get a stringified value.
+    if (typeof value === "string") return;
+
+    setSelectedPerson(value);
+  };
+
+  return (
+    <CustomSelect value={selectedPerson} onChange={handleOnChange}>
+      {people.map((person) => (
+        <MenuItem key={person.id} id={person.id} value={person}>
+          <Avatar src={`https://api.dicebear.com/9.x/open-peeps/svg?seed=${person.name}`} />
+          <span className="name">{person.name}</span>
+          <span className="job-title">{person.jobTitle}</span>
+        </MenuItem>
+      ))}
+    </CustomSelect>
+  );
+};
+```
+
+We can make do with the component library, but the resulting code is often hard to read and difficult to maintain. The alternative is to build the component from scratch.
+
+### Building from scratch
+
+Alright, so you decide to build the component from scratch. You quickly realize – or already know – that the native `select` element falls short in terms of styling. Therefore, you need to create something custom. You end up with something like this:
+
+```tsx
+import { useState } from "react";
+import { people } from "./data";
+
+export const FromScratch = () => {
+  const [selectedPerson, setSelectedPerson] = useState(people[0]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleSelect = (person: (typeof people)[number]) => {
+    setSelectedPerson(person);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="listbox-wrapper">
+      <button className="listbox-value outline" onClick={handleToggle}>
+        <img
+          className="avatar"
+          role="presentation"
+          src={`https://api.dicebear.com/9.x/open-peeps/svg?seed=${selectedPerson.name}`}
+        />
+        <span className="name">{selectedPerson.name}</span>
+        <span className="job-title">{selectedPerson.jobTitle}</span>
+      </button>
+      {isOpen && (
+        <div className="listbox-options">
+          {people.map((person) => (
+            <button
+              key={person.id}
+              className="listbox-option outline"
+              data-selected={person.id === selectedPerson.id || undefined}
+              onClick={() => handleSelect(person)}
+            >
+              <img
+                className="avatar"
+                role="presentation"
+                src={`https://api.dicebear.com/9.x/open-peeps/svg?seed=${person.name}`}
+              />
+              <span className="name">{person.name}</span>
+              <span className="job-title">{person.jobTitle}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+```
+
+This seems reasonable. And if we try to use it it also works! But this code is problematic. We haven’t considered:
+
+- Keyboard interaction
+- Focus management
+- ARIA and screen reader support
+- Collision-aware positioning
+
+If we implemented the above we would end up with a lot more code.
+
+Building good interaction is challenging. Users expect a lot from your components, and you need to accommodate a diverse range of users with different preferences and accessibility needs.
+
+> https://www.youtube.com/watch?v=lY-RQjWeweo
+
+Lately I've been using a different approach.
+
+## Headless UI
+
+I love how this name perfectly encapsulates the pattern I’m discussing. While the term has been around for some time, it’s now gaining popularity, with an increasing number of libraries adopting this pattern.
+
+Most notably, the similarly named `@headless-ui/react` from Tailwind Labs.
+
+> PICTURE OF DOWNLOAD STATS
+
+**So, what is it?**
+
+It’s <Source index={3}>**“Bring your own UI”**</Source>. It’s <Source index={4}>**“unstyled primitive components”**</Source>.
+
+The key distinction from traditional component libraries is that Headless UI provides the building blocks to create your own components. You have complete control over the design and, sometimes, even the HTML structure.
+
+**"What does it even do, then?"** you might ask.
+
+### Common interaction patterns
+
+Most libraries have functionality for common interaction patterns such as:
+
+- Dialogs
+- Form controls
+- Dropdowns
+- Tabs
+- Popovers
+
+They give you the options to use and compose these patterns. Alright, so what happens when we try to build that same select component again, but now with `@headless-ui/react`. The most starred Headless UI library from the bunch.
+
+> PICTURE OF STARS STATS
+
+```tsx
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import { useState } from "react";
+import { people } from "./data";
+
+export const Headless = () => {
+  const [selectedPerson, setSelectedPerson] = useState(people[0]);
+
+  return (
+    <Listbox value={selectedPerson} onChange={setSelectedPerson}>
+      <ListboxButton className="listbox-button outline">
+        <img
+          className="avatar"
+          role="presentation"
+          src={`https://api.dicebear.com/9.x/open-peeps/svg?seed=${selectedPerson.name}`}
+        />
+        <span className="name">{selectedPerson.name}</span>
+        <span className="job-title">{selectedPerson.jobTitle}</span>
+      </ListboxButton>
+      <ListboxOptions transition unmount={false} anchor={{ to: "bottom", gap: 4 }} className="listbox-options outline">
+        {people.map((person) => (
+          <ListboxOption key={person.id} value={person} className="listbox-option">
+            <img
+              className="avatar"
+              role="presentation"
+              src={`https://api.dicebear.com/9.x/open-peeps/svg?seed=${person.name}`}
+            />
+            <span className="name">{person.name}</span>
+            <span className="job-title">{person.jobTitle}</span>
+          </ListboxOption>
+        ))}
+      </ListboxOptions>
+    </Listbox>
+  );
+};
+```
+
+The end results is kinda similar of even simpler than the version we’ve created from scratch. But we now have all the things we missed in the from scratch example.

@@ -14,13 +14,11 @@ const nextConfig = {
       },
     ];
   },
-  experimental: {
-    ppr: true,
-  },
 };
 
 const ContentSecurityPolicy = `
   default-src 'self';
+  frame-src *.codesandbox.io;
   script-src 'self' 'unsafe-eval' 'unsafe-inline' va.vercel-scripts.com;
   style-src 'self' 'unsafe-inline';
 `;

@@ -1,15 +1,16 @@
+import { Sandpack } from "@codesandbox/sandpack-react";
 import { evaluate } from "@mdx-js/mdx";
 import { Code } from "bright";
 import Image from "next/image";
 import Link from "next/link";
-import { ComponentProps, createElement } from "react";
+import { type ComponentProps, createElement } from "react";
 import * as runtime from "react/jsx-runtime";
 
 Code.theme = "github-dark";
 Code.lineNumbers = true;
 
 function CustomLink(props: ComponentProps<"a">) {
-  const href = String(props.href);
+  const href = props.href || "";
 
   if (href.startsWith("/")) {
     return (
@@ -39,7 +40,7 @@ function slugify(str: string) {
 
 function createHeading(level: number) {
   return ({ children }) => {
-    let slug = slugify(children);
+    const slug = slugify(children);
     return createElement(
       `h${level}`,
       { id: slug },
@@ -50,12 +51,12 @@ function createHeading(level: number) {
           className: "anchor",
         }),
       ],
-      children
+      children,
     );
   };
 }
 
-let components = {
+const components = {
   h1: createHeading(1),
   h2: createHeading(2),
   h3: createHeading(3),
@@ -63,16 +64,17 @@ let components = {
   h5: createHeading(5),
   h6: createHeading(6),
   Image: Image,
-  pre: Code,
+  pre: (props) => (
+    <div className="w-[120%] mx-[-10%]">
+      <Code {...props} />
+    </div>
+  ),
   a: CustomLink,
+  Sandpack: Sandpack,
+  Source: ({ children }) => children,
 };
 
 export async function CustomMDX(props: { source: string }) {
   const { default: MDXContent } = await evaluate(props.source, runtime);
-  return (
-    <>
-      {/* @ts-ignore */}
-      <MDXContent components={components} />
-    </>
-  );
+  return <MDXContent components={components} />;
 }

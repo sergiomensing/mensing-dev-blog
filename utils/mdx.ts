@@ -1,6 +1,6 @@
-import path from "node:path";
 import fs from "node:fs/promises";
-import { parse } from "yaml";
+import path from "node:path";
+import { parse as parseYaml } from "yaml";
 
 export async function getMDXFilePaths(dir: string) {
   const dirents = await fs.readdir(dir, { withFileTypes: true });
@@ -17,15 +17,18 @@ export async function readMDXFile(filePath: string) {
 export function parseFrontmatter(fileContent: string) {
   const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
   const match = frontmatterRegex.exec(fileContent);
-  const frontMatterBlock = match![1];
+  if (!match) throw new Error("No frontmatter found");
+  const frontMatterBlock = match[1];
   const content = fileContent.replace(frontmatterRegex, "").trim();
-  const frontmatter = parse(frontMatterBlock);
+  const frontmatter = parseYaml(frontMatterBlock);
   return { frontmatter, content };
 }
 
 export function getMDXData(dir: string) {
-  return async function (filePath: string) {
-    const { frontmatter, content } = await readMDXFile(path.join(dir, filePath));
+  return async (filePath: string) => {
+    const { frontmatter, content } = await readMDXFile(
+      path.join(dir, filePath),
+    );
     const slug = path.basename(filePath, path.extname(filePath));
     return { frontmatter, content, slug };
   };

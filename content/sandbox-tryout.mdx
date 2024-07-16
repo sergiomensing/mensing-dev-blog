@@ -1,0 +1,185 @@
+---
+draft: true
+title: "Sandbox tryout"
+description: ""
+date: "2024-07-01"
+readingTime: 10
+---
+
+<Sandpack
+  template="react"
+  files={{
+    "styles.css": `/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/*
+    2. Remove default margin
+  */
+* {
+  margin: 0;
+}
+/*
+    Typographic tweaks!
+    3. Add accessible line-height
+    4. Improve text rendering
+  */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+/*
+    5. Improve media defaults
+  */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+/*
+    6. Remove built-in form typography styles
+  */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+/*
+    7. Avoid text overflows
+  */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+/*
+    8. Create a root stacking context
+  */
+#root {
+  isolation: isolate;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  background-color: #f6f9ff;
+  font-size: 0.875rem;
+}
+
+.listboxes {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  min-height: 100svh;
+  padding: 1.5rem;
+}`,
+    "App.js": `import { ListboxMaterial } from "./Listbox"
+    
+export default function App() {
+  return (
+    <div className="listboxes">
+      <ListboxMaterial />
+    </div>
+  );
+}
+`,
+    "data.js": `export const people = [
+  { id: 1, name: "Durward Reynolds", jobTitle: "Software Engineer" },
+  { id: 2, name: "Kenton Towne", jobTitle: "Project Manager" },
+  { id: 3, name: "Therese Wunsch", jobTitle: "Graphic Designer" },
+  { id: 4, name: "Benedict Kessler", jobTitle: "Data Analyst" },
+  { id: 5, name: "Katelyn Rohan", jobTitle: "HR Specialist" },
+  { id: 6, name: "Liam Smith", jobTitle: "Marketing Coordinator" },
+  { id: 7, name: "Olivia Johnson", jobTitle: "Sales Representative" },
+  { id: 8, name: "William Brown", jobTitle: "Customer Service Manager" },
+  { id: 9, name: "Ava Jones", jobTitle: "IT Support Specialist" },
+  { id: 10, name: "Sophia Garcia", jobTitle: "Operations Manager" },
+];
+`,
+  "Listbox.js": `import { useState } from "react";
+import { Select, MenuItem, Avatar } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { people } from "./data";
+
+const CustomSelect = styled(Select)(({ theme }) => ({
+  fontSize: "0.875rem",
+  width: "min(40ch, 100%)",
+
+  "& .MuiInputBase-input": {
+    borderRadius: 6,
+    backgroundColor: theme.palette.background.paper,
+    padding: "0.375rem 0.75rem",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.375rem",
+  },
+  "& .MuiSelect-icon": {
+    display: "none",
+  },
+  "& .MuiAvatar-root": {
+    marginInlineStart: "-0.25rem",
+    width: "2em",
+    height: "2em",
+  },
+  "& .MuiMenuItem-root": {
+    gap: "0.375rem",
+    fontSize: "0.875rem",
+  },
+  "& .job-title": {
+    marginInlineStart: "auto",
+  },
+}));
+
+export const ListboxMaterial = () => {
+  const [selectedPerson, setSelectedPerson] = useState(people[0]);
+
+  const handleOnChange = (event) => {
+    const { target: { value } } = event;
+
+    // On autofill we get a stringified value.
+    if (typeof value === "string") return;
+
+    setSelectedPerson(value);
+  };
+
+  return (
+    <CustomSelect value={selectedPerson} onChange={handleOnChange}>
+      {people.map((person) => (
+        <MenuItem key={person.id} id={person.id} value={person}>
+          <Avatar
+            src={\`https://api.dicebear.com/9.x/open-peeps/svg?seed=\${person.name}\`}
+          />
+          <span className="name">{person.name}</span>
+          <span className="job-title">{person.jobTitle}</span>
+        </MenuItem>
+      ))}
+    </CustomSelect>
+  );
+};
+`
+  }}
+  customSetup={{
+    dependencies: {
+      "@emotion/react": "11.11.4",
+      "@emotion/styled": "11.11.5",
+      "@mui/material": "5.15.21",
+    },
+  }}
+/>

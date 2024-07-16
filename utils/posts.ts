@@ -1,6 +1,7 @@
 import path from "node:path";
 import z from "zod";
 import { getAllMDXData } from "./mdx";
+
 export const contentDir = path.join(process.cwd(), "content");
 
 export const postFrontmatterSchema = z.object({
@@ -11,7 +12,9 @@ export const postFrontmatterSchema = z.object({
   draft: z.boolean().default(false),
   tags: z.array(z.string()).optional(),
   readTime: z.number().optional(),
-  sources: z.array(z.object({ title: z.string(), url: z.string().url() })).optional(),
+  sources: z
+    .array(z.object({ title: z.string(), url: z.string().url() }))
+    .optional(),
 });
 
 export const getAllPosts = async () => {

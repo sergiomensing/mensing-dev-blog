@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 
@@ -37,7 +37,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <header>
             <div className="flex items-center gap-8">
               <Link href="/" className="underline">
-                mensing.dev
+                Mensing.dev
               </Link>
               <nav className="ml-auto font-medium flex items-center gap-6">
                 <NavLink href="/">Home</NavLink>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 export const NavLink = (props: ComponentProps<typeof Link>) => {
   const { className, children, ...rest } = props;

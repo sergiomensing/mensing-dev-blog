@@ -1,0 +1,8 @@
+pre-commit:
+  commands:
+    check:
+      run: pnpm check --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+pre-push:
+  commands:
+    check:
+      run: pnpm check --no-errors-on-unmatched --files-ignore-unknown=true {push_files}

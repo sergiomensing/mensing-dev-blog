@@ -1,74 +1,52 @@
 import { Sandpack } from "@codesandbox/sandpack-react";
 import { evaluate } from "@mdx-js/mdx";
 import { Code } from "bright";
+import { ExternalLink } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { type ComponentProps, createElement } from "react";
 import * as runtime from "react/jsx-runtime";
+import { Link } from "../../components/link";
+import { Heading } from "./heading";
+import { Video } from "./video";
 
 Code.theme = "github-dark";
 Code.lineNumbers = true;
 
-function CustomLink(props: ComponentProps<"a">) {
-  const href = props.href || "";
-
-  if (href.startsWith("/")) {
+function CustomLink(props: React.ComponentProps<"a">) {
+  if (props.href?.startsWith("/")) {
     return (
-      <Link {...props} href={href}>
+      <Link {...props} href={props.href}>
         {props.children}
       </Link>
     );
   }
 
-  if (href.startsWith("#")) {
-    return <a {...props} href={href} />;
+  if (props.href?.startsWith("#")) {
+    return <Link {...props} href={props.href} />;
   }
 
-  return <a target="_blank" rel="noopener noreferrer" {...props} href={href} />;
-}
-
-function slugify(str: string) {
-  return str
-    .toString()
-    .toLowerCase()
-    .trim() // Remove whitespace from both ends of a string
-    .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/&/g, "-and-") // Replace & with 'and'
-    .replace(/[^\w\-]+/g, "") // Remove all non-word characters except for -
-    .replace(/\-\-+/g, "-"); // Replace multiple - with single -
-}
-
-function createHeading(level: number) {
-  return ({ children }) => {
-    const slug = slugify(children);
-    return createElement(
-      `h${level}`,
-      { id: slug },
-      [
-        createElement("a", {
-          href: `#${slug}`,
-          key: `link-${slug}`,
-          className: "anchor",
-        }),
-      ],
-      children,
-    );
-  };
+  return (
+    <Link
+      target="_blank"
+      rel="noopener noreferrer"
+      href={props.href}
+      {...props}
+    >
+      {props.children}
+      <ExternalLink size="1em" />
+    </Link>
+  );
 }
 
 const components = {
-  h1: createHeading(1),
-  h2: createHeading(2),
-  h3: createHeading(3),
-  h4: createHeading(4),
-  h5: createHeading(5),
-  h6: createHeading(6),
+  h1: (props) => <Heading {...props} level={1} />,
+  h2: (props) => <Heading {...props} level={2} />,
+  h3: (props) => <Heading {...props} level={3} />,
+  h4: (props) => <Heading {...props} level={4} />,
+  h5: (props) => <Heading {...props} level={5} />,
+  h6: (props) => <Heading {...props} level={6} />,
   Image: Image,
-  pre: (props) => (
-    <div className="w-[120%] mx-[-10%]">
-      <Code {...props} />
-    </div>
-  ),
+  Video: Video,
+  pre: (props) => <Code {...props} />,
   a: CustomLink,
   Sandpack: Sandpack,
   Source: ({ children }) => children,

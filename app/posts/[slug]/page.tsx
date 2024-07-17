@@ -1,8 +1,9 @@
+import { Link } from "@/components/link";
 import { draftFilter, getAllPosts } from "@/posts";
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import { PostHeader } from "./post-header";
 import { CustomMDX } from "./mdx";
-import { DraftTag } from "@/components/draft-tag";
+import styles from "./page.module.css";
 
 export type PostPageProps = {
   params: {
@@ -17,15 +18,44 @@ export default async function PostPage({ params: { slug } }: PostPageProps) {
     return notFound();
   }
 
-  const { title, description, draft } = post.frontmatter;
+  const { title, description, sources } = post.frontmatter;
 
   return (
-    <>
-      <DraftTag draft={draft} className="mb-4" />
-      <PostHeader title={title} description={description} />
-      <div className="prose dark:prose-invert">
-        <CustomMDX source={post.content} />
+    <div className={`${styles.page} container`}>
+      <div className="prose">
+        <h1 className={styles.title}>{title}</h1>
+        {description && <p className={styles.description}>{description}</p>}
       </div>
-    </>
+      <article className={`${styles.layout} prose`}>
+        <CustomMDX source={post.content} />
+      </article>
+      {sources && (
+        <div className={styles.sources}>
+          <h2>Sources</h2>
+          <ol>
+            {sources.map((source, index) => (
+              <li key={source.url} id={`sources-${index + 1}`}>
+                <sup>{index + 1}.</sup>
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={source.url}
+                >
+                  <Image
+                    src={`/icons/${source.icon}`}
+                    width={20}
+                    height={20}
+                    alt=""
+                    role="presentation"
+                  />
+                  {source.name && <strong>{source.name}</strong>}
+                  <span>{source.title}</span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+    </div>
   );
 }

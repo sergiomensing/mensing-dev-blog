@@ -13,7 +13,14 @@ export const postFrontmatterSchema = z.object({
   tags: z.array(z.string()).optional(),
   readTime: z.number().optional(),
   sources: z
-    .array(z.object({ title: z.string(), url: z.string().url() }))
+    .array(
+      z.object({
+        title: z.string(),
+        url: z.string().url(),
+        icon: z.string(),
+        name: z.string().optional(),
+      }),
+    )
     .optional(),
 });
 

@@ -1,0 +1,69 @@
+@layer reset {
+  /* Credits: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+
+    /* Credits: https://adrianroselli.com/2019/09/under-engineered-text-boxen.html */
+    letter-spacing: inherit;
+    word-spacing: inherit;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  /* Some additional styles */
+  body {
+    font-family: var(--font-body);
+
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  hr {
+    border: 0;
+    border-bottom: 1px solid var(--border);
+  }
+}

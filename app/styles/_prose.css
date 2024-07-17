@@ -1,0 +1,111 @@
+@layer utilities {
+  .prose {
+    --offset: 1rem;
+
+    & > * + * {
+      margin-block-start: var(--offset);
+    }
+
+    & * + h1 {
+      margin-block-start: calc(var(--offset) * 4);
+    }
+
+    & h1 + p {
+      margin-block-start: calc(var(--offset) / 2);
+    }
+
+    & * + h2 {
+      margin-block-start: calc(var(--offset) * 3);
+    }
+
+    & h2 + p {
+      margin-block-start: calc(var(--offset) / 2);
+    }
+
+    & * + h3 {
+      margin-block-start: calc(var(--offset) * 2);
+    }
+
+    & * + h3 + p {
+      margin-block-start: calc(var(--offset) / 2);
+    }
+
+    & img,
+    & video {
+      border-radius: 6px;
+      overflow: hidden;
+      height: auto;
+    }
+
+    & figcaption {
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      padding: 0.375rem;
+    }
+
+    & strong {
+      font-weight: 600;
+    }
+
+    /* code in the text */
+    & p > code,
+    li > code {
+      background: var(--bg-layer-1);
+      padding: 0.25em 0.4em;
+      border-radius: 4px;
+    }
+
+    /* code inside a link */
+    & a > code {
+      background: var(--bg-layer-1);
+      padding: 0.25em 0.4em;
+      border-radius: 4px;
+    }
+
+    /* aside is used for a callout component inside the prose */
+    & aside {
+      background: var(--bg-layer-1);
+      padding: 0.75rem 1rem 0.875rem;
+      border-radius: 6px;
+    }
+
+    /* Links */
+    & a[data-rac] {
+      outline: 0;
+      color: var(--text-highlight);
+      text-decoration: none;
+
+      &[data-hovered] {
+        color: var(--text-highlight-hovered);
+        text-decoration: underline;
+      }
+
+      &[data-pressed] {
+        opacity: 0.8;
+      }
+
+      & svg {
+        color: var(--icon-highlight);
+      }
+
+      &[data-focus-visible] {
+        outline: var(--highlight) auto 2px;
+      }
+    }
+
+    /* Link that go to external sites have an icon */
+    & a[target="_blank"] svg {
+      display: inline;
+      transform: translateY(0.1em);
+      margin-inline-start: 0.1em;
+    }
+
+    /* Don't know if this belongs here, but on smaller screens, hide the line numbers of code blocks */
+    @media screen and (max-width: 768px) {
+      & [data-bright-theme] [data-bright-ln] {
+        display: none;
+      }
+    }
+  }
+}

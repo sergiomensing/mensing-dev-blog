@@ -2,13 +2,14 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Link from "next/link";
+import { ClientProviders } from "./client-providers";
+import { ActiveLink } from "./components/active-link";
+import { Link } from "./components/link";
 
-import { NavLink } from "@/nav-link";
+import styles from "./layout.module.css";
+import "./styles/style.css";
 
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Mensing.dev",
@@ -29,24 +30,24 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body
-        className={`antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${inter.className}`}
-      >
-        <div className="max-w-2xl mx-auto py-10 px-4">
-          <header>
-            <div className="flex items-center gap-8">
-              <Link href="/" className="underline">
-                Mensing.dev
-              </Link>
-              <nav className="ml-auto font-medium flex items-center gap-6">
-                <NavLink href="/">Home</NavLink>
-                <NavLink href="/about">About</NavLink>
-              </nav>
-            </div>
+    <html lang="en" className={inter.variable}>
+      <body>
+        <ClientProviders>
+          <header className={`${styles.header} container`}>
+            <Link href="/" className={styles.logo}>
+              Mensing.dev
+            </Link>
+            <nav className={styles.nav}>
+              <ActiveLink className={styles["nav-link"]} href="/">
+                Home
+              </ActiveLink>
+              <ActiveLink className={styles["nav-link"]} href="/about">
+                About
+              </ActiveLink>
+            </nav>
           </header>
           <main>{children}</main>
-        </div>
+        </ClientProviders>
         <Analytics />
         <SpeedInsights />
       </body>

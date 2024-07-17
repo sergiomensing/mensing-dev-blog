@@ -1,0 +1,64 @@
+.introduction {
+  margin-block: 4rem;
+
+  & h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+}
+
+.writing {
+  display: grid;
+  gap: 2rem;
+  margin-block: 4rem;
+
+  & h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+}
+
+.posts {
+  display: grid;
+  gap: 2rem;
+  padding: 0;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  & h3 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  & a {
+    text-decoration: none;
+    outline: 0;
+    transition: color 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+    padding: 0.25em;
+    border-radius: 6px;
+    margin: -0.25em;
+
+    &[data-hovered] {
+      color: var(--highlight);
+      transition-duration: 80ms;
+    }
+
+    &[data-pressed] {
+      opacity: 0.8;
+      transition-duration: 80ms;
+      color: var(--highlight);
+    }
+
+    &[data-focus-visible] {
+      outline: 2px solid var(--highlight);
+    }
+  }
+
+  & p {
+    color: var(--text-secondary);
+  }
+}

@@ -1,0 +1,29 @@
+:root {
+  /* Font inter is provided by next/font in the root layout */
+  --font-body: var(--font-inter);
+
+  --font-display: var(--font-body);
+  --font-mono: "Courier New", Courier, monospace;
+
+  /* Colors */
+  --bg: #fff;
+  --bg-hovered: #eaeef1;
+
+  --bg-layer-1: #eaeef1;
+
+  --text: #0c1018;
+  --text-highlight: #0d48c7;
+  --text-highlight-hovered: #044be4;
+  --icon-highlight: #0f50dc;
+  --text-secondary: #626972;
+  --highlight: #1b63ff;
+
+  --border: #eaeaea;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111111;
+    --text: #fff;
+  }
+}

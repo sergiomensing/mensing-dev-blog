@@ -1,9 +1,14 @@
 @layer utilities {
   .prose {
     --offset: 1rem;
+    text-wrap: pretty;
 
     & > * + * {
       margin-block-start: var(--offset);
+    }
+
+    & *:is(h1, h2, h3, h4, h5, h6) {
+      font-weight: 600;
     }
 
     & * + h1 {
@@ -30,8 +35,7 @@
       margin-block-start: calc(var(--offset) / 2);
     }
 
-    & img,
-    & video {
+    & :is(img, video) {
       border-radius: 6px;
       overflow: hidden;
       height: auto;
@@ -46,6 +50,22 @@
 
     & strong {
       font-weight: 600;
+    }
+
+    /* Proper spacing for lists */
+    & *:is(ul, ol) {
+      padding: 0;
+      padding-inline-start: 3ch;
+      margin-block-start: calc(var(--offset) / 2);
+
+      & > li {
+        margin-block-start: calc(var(--offset) / 2);
+      }
+    }
+
+    /* different list style for nested lists */
+    & ol ol {
+      list-style-type: lower-alpha;
     }
 
     /* code in the text */

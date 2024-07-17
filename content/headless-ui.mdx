@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Non-styled component libraries"
 description: "Bring your owns UI design"
 date: "2024-07-01"
@@ -29,49 +29,153 @@ sources:
     icon: "youtube.svg"
 ---
 
-So, what happens when your product owner or designer proposes a feature like this. You must be able to select a user and see their job title.
+Imagine your product owner or designer proposes a new feature. A select component where you must be able to select a user and see their avatar and job title.
 
 <Video videoKey="mouse" />
 
-{/* ![A screenshot of a custom dropdown component](/images/custom-dropdown.jpg) */}
+You might hesitate, but the product owner is insistent. They want this component, and they want it now!
 
-You might push back a bit, but the PO is adamant. They want this component, and they want it now!
+Most people would consider one of the following two options:
 
-I’ve this was me a couple of years ago, I would consider the following two options:
+1. **Using a prebuilt component:**
+   1. Use a component library like [Material UI](https://mui.com/) and modify the appearance to match the design.
+   2. Use a package like [`react-select`](https://react-select.com/home) to create this component.
+2. **Build the component from scratch.**
 
-1. Using a prebuilt component.
-   1. Use a component library like Material UI and modify the appearance to match the design.
-   2. Use a package like `react-select` to create this component.
-2. Build the component from scratch.
+## Understanding the Problem
 
-## Understanding the problem
+Both solutions have their own challenges. Let’s start with the first approach.
 
-Both of these solutions come with their own set of challenges. Let’s start with the first approach.
+### Using a Prebuilt Component
 
-### Using a Component Library
+Most libraries allow customisation through themes. However, like with good ol’ Bootstrap, there are always recognisable elements that are either unmodifiable or very difficult to change.
 
-Most libraries allow you to customize their branding using themes. It depends on the library if this works well or not. But much like good ol’ Bootstrap[1], there are always recognisable elements that are either unmodifiable or very difficult to change.
+If you're like me, you often struggle with the library—overriding styles with hacky solutions and dealing with missing features in the component API. You strive to create the best user experience, but the component library holds you back.
 
-If you're like me, you often find yourself battling the library more than using it—overriding styles, dealing with missing features in the component API, etc. You strive to create the best experience for your users, but the component library is holding you back.
+It's never a good sign when you battle with a library. Component libraries should save time and effort, not increase it.
 
-It is not a good sign when you are battling with a library. One of the purposes of a Component Library is to safe time and effort. Not to increate time and effort.
+I gave Material UI a shot to build the mentioned component. Here’s how it turned out:
 
-But we still need to make the component.. what can we do?
-
-### Building from scratch
-
-Alright, so you decide to build the component from scratch. You quickly realize—or already know—that the native `select` element falls short in terms of styling. Therefore, you need to create something custom.
-
-<Video videoKey="from-scratch" caption="LGTM!" />
+<Video videoKey="material" />
 
 <details>
-  <summary>Expand code</summary>
+<summary>Expand code</summary>
+
+```tsx
+import { useState } from "react";
+import { Select, SelectChangeEvent, MenuItem, Avatar, Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { people } from "./data";
+
+export const CustomSelect = styled(Select<(typeof people)[0]>)(({ theme }) => ({
+  fontSize: "0.875rem",
+  width: "min(40ch, 100%)",
+
+  "& .MuiInputBase-input": {
+    borderRadius: 6,
+    backgroundColor: theme.palette.background.paper,
+    padding: "0.375rem 0.75rem",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.375rem",
+  },
+  "& .MuiSelect-icon": {
+    display: "none",
+  },
+}));
+
+export const ListboxMaterial = () => {
+  const [selectedPerson, setSelectedPerson] = useState(people[0]);
+
+  const handleOnChange = (event: SelectChangeEvent<(typeof people)[number]>) => {
+    const {
+      target: { value },
+    } = event;
+
+    // On autofill we get a stringified value.
+    if (typeof value === "string") return;
+
+    setSelectedPerson(value);
+  };
+
+  return (
+    <CustomSelect value={selectedPerson} onChange={handleOnChange}>
+      {people.map((person) => (
+        <MenuItem
+          key={person.id}
+          id={person.id}
+          value={person}
+          sx={{
+            gap: "0.375rem",
+            fontSize: "0.875rem",
+          }}
+        >
+          <Avatar
+            sx={{
+              marginInlineStart: "-0.25rem",
+              width: "2em",
+              height: "2em",
+            }}
+            src={`https://api.dicebear.com/9.x/open-peeps/svg?seed=${person.name}`}
+          />
+          <span className="name">{person.name}</span>
+          <Box
+            component="span"
+            sx={{
+              marginInlineStart: "auto",
+              color: (theme) => theme.palette.text.secondary,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {person.jobTitle}
+          </Box>
+        </MenuItem>
+      ))}
+    </CustomSelect>
+  );
+};
+```
+
+While the code is acceptable, I’m working against the styling of the component, making it harder to maintain.
+
+</details>
+
+---
+
+You can still recognise Material UI, especially the signature ripple effect indicating a user press. We could try to remove these things, but again, we’d be working against the library.
+
+<aside>
+👉 Depending on the type of application you are building, not having full control over the styling might be beneficial. For internal company applications or proofs of concept, prebuilt libraries can be great. However, for public-facing applications, you probably want more control.
+
+</aside>
+
+Another option is to build the component from scratch.
+
+### Building from Scratch
+
+Alright, so you decide to build the component from scratch. You quickly realize—or already know—that the native [`select`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) element [falls short in terms of styling](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css), so you need to create something custom.
+
+Looking at the component, we need to:
+
+- Show the currently selected option
+- Toggle the options list
+- Select a new option
+
+Here’s what I came up with:
+
+<Video videoKey="from-scratch" />
+
+Screen recording of the component.
+
+Pretty neat, right? LGTM. Let’s ship it!
+
+<details>
+<summary>Expand code</summary>
 
 ```tsx
 import { useState } from "react";
 import { people } from "./data";
-
-import "./listbox.from-scratch.css";
 
 export const FromScratch = () => {
   const [selectedPerson, setSelectedPerson] = useState(people[0]);
@@ -124,111 +228,221 @@ export const FromScratch = () => {
 
 </details>
 
-Okay, when I try to use it, this works. But this code is problematic. We haven’t considered:
+---
 
-- **Keyboard interaction.** In a native select, using the arrows will navigate between options. Also you can type to select an option.
+Not so fast! This component is problematic. It tries to mimic the native `select` look with some custom styling, but the native `select` has plenty of functionality we haven’t considered yet:
+
+- **Keyboard interaction.** In a native `select`, using the arrows will navigate between options. Also you can type to select an option.
 - **Focus management.** What happens when we focus away from the options? The select stays open. This is not what we want.
 - **ARIA and screen reader support.** We’ve created a select, and visually it looks like a select. But nowhere in the code do we say it is a select.
 - **Collision-aware positioning.** By default a select opens on top of the select. But only if there is room on the screen. If there is no more room the position shifts to the top or the bottom depending on where there is space.
 
+Here you can see me trying to click away to close or use the arrow keys to navigate the options. This doesn’t work. Then, when I try to tab away, I start cycling through the options.
+
+<Video videoKey="nightmare" />
+
 We can try to address all these problems but we would end up with a LOT more code. This component will become a headache to test and maintain.
 
 Building good interaction is really challenging. Users expect a lot from your components, and you need to accommodate a diverse range of users with different preferences and accessibility needs.
+
 Lately I've been using a different approach.
 
-## Headless UI
+# Headless UI
 
 I love how this name perfectly encapsulates the pattern I’m discussing. While the term has been around for some time, it’s now gaining popularity, with an increasing number of libraries adopting this pattern.
 
 Most notably, the similarly named [`@headless-ui/react`](https://headlessui.com/) from Tailwind Labs.
 
-**_So, what is it?_**
+![Comparing headless UI libraries on NPM Trends](/images/npm-trends-headless-ui.png)
 
-It’s “Bring your own UI” [<sup>[1]</sup>](#sources-1). It’s “unstyled primitive components” [<sup>[2]</sup>](#sources-2).
+**So, _what is it?_**
 
-The key distinction from traditional component libraries is that Headless UI provides the building blocks to create your own components. You have complete control over the design and, sometimes, even the HTML structure.
+It’s _“Bring your own UI”_ <sup>[[1]](#sources-1)</sup>. It’s _“unstyled primitive components”_ <sup>[[2]](#sources-2)</sup>.
 
-"What does it even do, then?" you might ask.
+The key distinction from traditional component libraries is that Headless UI provides the building blocks to create your own components. You have complete control over the design and, most of the time, even the HTML structure.
 
-Well it kinda depends on the library. But the main themes are:
+_“What does it even do, then?”_ you might ask.
+
+Well, it kinda depends on the library. But the main themes are:
 
 - Common interaction patterns, not provided by the web platform.
 - Cross browser and device compatibility.
 - Other.
 
-### Common interaction patterns
+## Common Interaction Patterns
 
-These are interactions patterns not provided – or not extensible enough – by the web platform.
+These are interaction patterns not provided—or not extensible enough—by the web platform.
 
-An example of such an interaction is the combobox. This is a very common component, but it is not provided by browsers in any way. People have some to expect this pattern when dealing with large datasets and a long list of options. It even has [a official specification](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/).
+An example is the **Combobox**. This common component is not provided by browsers in any way. People have come to expect this pattern when dealing with large datasets and long lists of options. WIA has described the [Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) in detail.
 
-Another example of a case where browsers are not extensible enough is with the `select` element. This element is famously not stylable. There is [some great work](https://open-ui.org/components/selectlist/) being done by the Open UI community on breaking down the best way to make a more extensible select element. But in the meantime, if you want to style a select, we need to implement it ourselves.
-
-Alright, so what happens when we try to build that same select component again, but now with `@headless-ui/react`. The most starred Headless UI library from the bunch.
-
-From [NPM Trends](https://npmtrends.com/@headlessui/react-vs-@radix-ui/react-dialog-vs-@reach/dialog-vs-ariakit-vs-react-aria-components)
-
-We can re-use the styles from the “build from scratch” example. I’ve made some small naming tweaks to be more inline with the components provided by the library.
-
-The end results is kinda similar of even simpler than the version we’ve created from scratch. We are focussing mainly on how the select looks and what elements are there. So the component remains just as readable.
-
-But we also got some more things.
-
-#### Keyboard interactions
-
-Using the arrow keys, we can navigate through the options. Using enter we can select a new option. Escape closes the select and refocusses the `ListboxButton` element.
-
-#### Focus management
-
-There are two focusable areas in this component. First we have the `ListboxButton` element, this is always visible.
-
-Next we have the `ListboxOptions` element. This element will become focused upon opening the select. Even when the `ListboxOptions` element is not close to the `ListboxButton` element when we look at the DOM structure of this component.
-
-The individual ListboxOption elements are not focusable because we can navigate through them using the arrow keys. When the user selects an option, the focus gets restored to the `ListboxButton` element.
-
-#### ARIA
-
-ARIA (Accessible Rich Internet Applications) declarations are added. Following the [listbox specification](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/).
+Another good example is the `select` element, which is [famously not stylable.](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css) If you want to style a select, we need to implement it ourselves.
 
 <aside>
-☝ While these libraries will help you with describing the component using ARIA roles. When doing custom stuff with the library, or making “hacky” solutions make sure the ARIA roles are still correct. No ARIA is better than bad ARIA. [2]
+  👉️ There is [some great work](https://open-ui.org/components/selectlist/) being done by the Open UI community on
+  breaking down the best way to make a more extensible select element. But in the meantime, if you want to style a
+  select, we need to implement it ourselves.
+</aside>
+
+---
+
+Alright, so what happens when we try to build that same select component again, but now with `@headless-ui/react`, the most starred Headless UI library from the bunch?
+
+Loading the library and setting up the select (listbox) looks like this:
+
+<Video videoKey="unstyled" />
+
+This might come as a shock, but consider the possibilities here. We don’t have to find hacky ways to override the default styling of a component because we have control over every HTML element and every line of CSS. For now, we can simply reuse the styles from the “build from scratch” example, with some small naming tweaks to align with the components provided by the library.
+
+<Video videoKey="mouse" />
+
+<details>
+<summary>Expand code</summary>
+
+```tsx
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import { useState } from "react";
+import { people } from "./data";
+
+import "./listbox.headless.css";
+
+export const Headless = () => {
+  const [selectedPerson, setSelectedPerson] = useState(people[0]);
+
+  return (
+    <Listbox value={selectedPerson} onChange={setSelectedPerson}>
+      <ListboxButton className="listbox-button outline">
+        <img
+          className="avatar"
+          role="presentation"
+          src={`https://api.dicebear.com/9.x/open-peeps/svg?seed=${selectedPerson.name}`}
+        />
+        <span className="name">{selectedPerson.name}</span>
+        <span className="job-title">{selectedPerson.jobTitle}</span>
+      </ListboxButton>
+      <ListboxOptions transition unmount={false} anchor={{ to: "bottom", gap: 4 }} className="listbox-options outline">
+        {people.map((person) => (
+          <ListboxOption key={person.id} value={person} className="listbox-option">
+            <img
+              className="avatar"
+              role="presentation"
+              src={`https://api.dicebear.com/9.x/open-peeps/svg?seed=${person.name}`}
+            />
+            <span className="name">{person.name}</span>
+            <span className="job-title">{person.jobTitle}</span>
+          </ListboxOption>
+        ))}
+      </ListboxOptions>
+    </Listbox>
+  );
+};
+```
+
+</details>
+
+---
+
+Looking at the code, the end result is pretty similar. We focus mainly on UI elements and business logic. The component remains super readable, but we also gain some additional features.
+
+### **Keyboard interactions**
+
+Using the arrow keys, we can navigate through the options. Using enter, we can select a new option. Escape closes the select and refocuses the `ListboxButton` element.
+
+We can even start searching through the options by typing the first character(s) of an option.
+
+### **Focus management**
+
+There are two focusable areas in this component. First, we have the `ListboxButton` element, which is always visible.
+
+Next, we have the `ListboxOptions` element, which becomes focused upon opening the select. Even when the `ListboxOptions` element is not close to the `ListboxButton` element in the DOM structure, the individual `ListboxOption` elements are not focusable because we can navigate through them using the arrow keys. When the user selects an option, the focus is restored to the `ListboxButton` element.
+
+<Video videoKey="keyboard-navigation-and-focus-management" />
+
+### **ARIA**
+
+ARIA (Accessible Rich Internet Applications) declarations are added. Following the [listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/).
+
+<aside>
+👉 While these libraries help with describing the component using ARIA roles, ensure that custom or hacky solutions maintain correct ARIA roles. *“No ARIA is better than bad ARIA”.* [3]
 
 </aside>
 
-### Cross browser and device compatibility
+### Positioning
 
-The fun thing about the web is that is can be used almost anywhere. There are different browsers, with different render engines. There are a different devices, and different ways of interacting with web content.
+The default position for the options list is below the currently selected option. If we scroll so the UI element is at the bottom and try to open the options, they are shown above the currently selected option.
 
-And the web apps we write, have to function everywhere. Preferably with a great experience.
+<Video videoKey="collision-aware-positioning" />
 
-So how can headless UI libraries help us here?
+These are the kinds of features that take time to implement correctly, but they are also what makes a UI great instead of just good.
 
-They can help us create seamless experiences across different browsers and devices.
+## Cross browser and device compatibility
+
+The web can be accessed almost anywhere—different browsers, render engines, devices, and interaction methods.
+
+Our web apps need to function everywhere, preferably with a great experience. Headless UI libraries can help create seamless experiences across different browsers and devices.
+
+I’ll give an example using a simple button. Let’s say we have an outlined button that inverts its colors when hovered over with a mouse.
+
+<Video videoKey="button-hover" />
+
+<details>
+<summary>This is quite easy to do with the `:hover` CSS attribute.</summary>
+
+```css
+.button {
+  /* Simplified for example */
+
+  color: #326bfb;
+  background: transparent;
+  border: 1px solid #326bfb;
+}
+
+.button:hover {
+  color: white;
+  background: #326bfb;
+}
+```
+
+</details>
+It looks good, so let's ship it. But wait, let's test it on a mobile device first.
+
+When testing on a real mobile device (not just shrinking the viewport), we might see some strange behavior we didn't expect. The button goes to its hovered state...
+
+… video here
+
+The web was originally designed around mouse events. When touch devices emerged, browsers added support for touch events but also needed to emulate mouse events to maintain compatibility with existing web apps.
+
+Some Headless UI libraries offer (opinionated) solutions for handling things like hover and focus states making it easier to implement consistent and accessible UI interactions.
 
 <aside>
-👉 If you want to read more about this subject I really recommend this blog series about [building a button](https://react-spectrum.adobe.com/blog/building-a-button-part-1.html) as is perfectly demonstrates the challenges that come with building a seamless experience across different browsers and devices.
+👉 For more information on this subject, I highly recommend this blog series about [building a button](https://react-spectrum.adobe.com/blog/building-a-button-part-1.html), which perfectly demonstrates the challenges of creating a seamless experience across different browsers and devices.
 
 </aside>
 
-### Other
+## Other
 
 I wanted to mention a couple of other headless patterns that do provide functionality but allow you to keep control over styling.
 
-#### Data grids
+### **Data grids**
 
 Mostly used in administrative systems, these can become fairly complex. With functionality like sorting, filtering, pinning columns, grouping columns etc…
 
 <aside>
-👉 I really recommend [TanStack Table](https://tanstack.com/table/latest/docs/introduction) for this and encourage you to read there motivation/introduction as it also has a great explanation about headless UI.
+👉 I really recommend [TanStack Table](https://tanstack.com/table/latest/docs/introduction) for this and encourage you to read their motivation/introduction, which also offers a great explanation of headless UI.
 
 </aside>
 
-#### Transitions and Animations
+### **Transitions and Animations**
 
-This can be solved in CSS. But also here, there are use cases where the functionality of CSS falls short. For example, creating an “exit animation” whereafter a component is unmounted.
+While CSS can handle this, there are cases where its functionality falls short, such as creating an “exit animation” before a component is unmounted.
 
-From here we charter into the territory of just functionality. I think headless UI makes sense if the library is aimed at providing building blocks for the developer.
+From here, we enter the territory of just functionality. Headless UI makes sense if the library is aimed at providing building blocks for the developer.
 
-### Conclusion
+## Conclusion
 
-If you takeaway one thing from this blogpost. It is this. Create your own if you can do it better. But keep in mind that creating good UI is hard.
+Building good interactions is challenging. Users expect a lot from your components, and you need to accommodate a diverse range of users with different preferences and accessibility needs.
+
+So the next time a Product Owner asks you to build a super complex component, consider to use a Headless component library.
+
+> “Wait for a second, are you advocating a user interface pattern that doesn't have a user interface?”
+>
+> Yes. That is exactly what I'm advocating. <sup>[[4]](#sources-4)</sup>

@@ -23,35 +23,33 @@ sources:
     url: "https://www.merrickchristensen.com/articles/headless-user-interface-components/"
 ---
 
-Imagine your product owner or designer proposes a new feature. A select component where you must be able to select a user and see their avatar and job title.
+Imagine your product owner or designer proposes a new feature: a select component where you can choose a person and see their avatar and job title. Let's call it the PersonSelect component. It would look something like this:
 
 <Video videoKey="mouse" />
 
-You might hesitate, but the product owner is insistent. They want this component, and they want it now!
-
 Most people would consider one of the following two options:
 
-1. **Using a prebuilt component:**
-   1. Use a component library like [Material UI](https://mui.com/) and modify the appearance to match the design.
-   2. Use a package like [`react-select`](https://react-select.com/home) to create this component.
-2. **Build the component from scratch.**
+1. Using a Prebuilt Component.
+2. Build the Component from scratch.
 
-## Understanding the Problem
-
-Both solutions have their own challenges. Let’s start with the first approach.
+Both options have their own set of challenges.
 
 ### Using a Prebuilt Component
 
-Most libraries allow customisation through themes. However, like with good ol’ Bootstrap, there are always recognisable elements that are either unmodifiable or very difficult to change.
+Let’s start by discussing the first option, **using a Prebuilt Component**.
 
-If you're like me, you often struggle with the embedded component styling. Overriding styles with hacky solutions and dealing with missing features in the component API. You strive to create the best user experience, but the component library holds you back.
+When I’m talking about a Prebuilt Component, I’m referring to either a larger component library with various components, like Material UI, or a library/package specifically built to solve a certain problem, like `react-select`.
+
+Most Prebuilt Components allow customization through themes, configuration files, or changing CSS. But if you're like me, you often struggle with the embedded styling of Prebuilt Components.
+
+I often find myself overriding styles with hacky solutions or dealing with missing features in the prebuilt component. I want to create the best experience possible for our use case, but the prebuilt component holds me back.
 
 <aside>
-  👉 It's never a good sign when you battle with a library. Component libraries should save time and effort, not
-  increase it.
+  👉 Most times, it’s not a good sign when you battle with a package. Packages should save time and effort, not increase
+  it.
 </aside>
 
-I gave Material UI a shot to build the mentioned component. Here’s how it turned out:
+If we try to build the PersonSelect component with Material UI, we might end up with something like this:
 
 <Video videoKey="material" />
 
@@ -134,32 +132,33 @@ export const ListboxMaterial = () => {
 };
 ```
 
-While the code is acceptable, I’m working against the styling of the component, making it harder to maintain.
-
 </details>
 
 ---
 
-You can still recognise Material UI, especially the signature ripple effect indicating a user press. We could try to remove these things, but again, we’d be working against the library.
+This looks acceptable to me, but the designer probably won’t be happy. You can still recognise Material UI, especially the signature ripple effect indicating a user press. We could try to remove these things, but again, we’d be working against the library.
 
 <aside>
-👉 Depending on the type of application you are building, not having full control over the styling might be beneficial. For company internal applications or proofs of concept, prebuilt libraries can be great. However, for public-facing applications, you probably want more control.
-
+  👉 Depending on the type of application you are building, not having full control over the styling might be
+  beneficial. For company internal applications or proofs of concept, prebuilt libraries can be great. However, for
+  public-facing applications, you probably want more control.
 </aside>
 
-Another option is to build the component from scratch.
+The good thing is the component works as expected, and we didn’t have to do much to get this functionality. We only modified some styling and kept track of the selected person, which is the stuff we want control over.
+
+But we still have another option to consider.
 
 ### Building from Scratch
 
-Alright, so you decide to build the component from scratch. You quickly realize—or already know—that the native [`select`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) element [falls short in terms of styling](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css), so you need to create something custom.
+Alright, next we can explore building the PersonSelect component from scratch. I already know that the native [`select`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) element [falls short in terms of styling](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css), so we will need to create something custom. How hard can it be?
 
-Looking at the component, we need to:
+Looking at the component we need to:
 
-- Show the currently selected option
-- Toggle the options list
-- Select a new option
+- Show the currently selected option.
+- Toggle the options list when clicking on the currently selected option.
+- Be able to select another op
 
-Here’s what I came up with:
+Here is what that might look like:
 
 <Video videoKey="from-scratch" />
 
@@ -234,7 +233,7 @@ Not so fast! This component has several issues. It attempts to mimic the native 
 
 Here you can see me trying to click away to close or use the arrow keys to navigate the options. This doesn’t work. Then, when I try to tab away, I start cycling through the options.
 
-<Video videoKey="nightmare" />
+<Video videoKey="nightmare-2" />
 
 We can try to address all these problems but we would end up with a LOT more code. This component will become a headache to test and maintain.
 
@@ -244,9 +243,7 @@ Lately I've been using a different approach.
 
 # Headless UI
 
-I love how this name perfectly encapsulates the pattern I’m discussing. While the term has been around for some time, it’s now gaining popularity, with an increasing number of libraries adopting this pattern.
-
-Most notably, the similarly named [`@headless-ui/react`](https://headlessui.com/) from Tailwind Labs.
+"Headless" in this context means without overhead. Although the term Headless UI has been around for some time, it's now gaining popularity, with an increasing number of libraries adopting this approach. Most notably, the similarly named [`@headless-ui/react`](https://headlessui.com/) from Tailwind Labs.
 
 <Image
   src="/images/npm-trends-headless-ui.png"
@@ -259,7 +256,7 @@ Most notably, the similarly named [`@headless-ui/react`](https://headlessui.com/
 
 It’s _“Bring your own UI”_ <sup>[[1]](#sources-1)</sup>. It’s _“unstyled primitive components”_ <sup>[[2]](#sources-2)</sup>.
 
-The key distinction from traditional component libraries is that Headless UI provides the building blocks to create your own components. You have complete control over the design and, most of the time, even the HTML structure.
+The key distinction from Prebuilt Components and Component Libraries, is that Headless UI provides the building blocks to create your own components. You have complete control over the design and, sometimes, even the HTML structure.
 
 _“What does it even do, then?”_ you might ask.
 
@@ -269,23 +266,31 @@ Well, it kinda depends on the library. But the main themes are:
 - Cross browser and device compatibility.
 - Other.
 
+Let’s dive into those.
+
 ## Common Interaction Patterns
 
-These are interaction patterns not provided—or not extensible enough—by the web platform.
+The web support plenty of interaction patterns. For example, a button to press or an input element for entering text.
 
-An example is the Combobox. This common component is not provided by browsers in any way. People have come to expect this pattern when dealing with large datasets and long lists of options. WIA (Web Accessibility Initiative) has described the [Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) in detail.
+Headless UI libraries can offer new interaction patterns that the web platform doesn't provide.
 
-Another good example is the `select` element, which is [famously not stylable.](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css) If you want to style a select, we need to implement it ourselves.
+An example of a new component is the Combobox. A Combobox combines an input element and a select element, letting users search through options and select one or more. This component is not provided by browsers in any way. People have come to expect this pattern when dealing with large datasets and long lists of options. The Web Accessibility Initiative (WAI) has described the [Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) in detail.
+
+Headless UI libraries can also improve existing patterns that are currently not flexible enough.
+
+A good example of an improved component is the Select (also called Listbox) component. This component aims to replace the native select element, which is [famously difficult to style](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css), giving you full control over the styling.
+
+Most Headless UI libraries come with support for comboboxes and listboxes.
 
 <aside>
   👉️ There is [some great work](https://open-ui.org/components/selectlist/) being done by the Open UI community on
-  breaking down the best way to make a more extensible select element. But in the meantime, if you want to style a
+  breaking down the best way to make a more extensible select element. But in the meantime, if we want to style a
   select, we need to implement it ourselves.
 </aside>
 
-### Our example
+### Building the `PersonSelect` component.
 
-Alright, so what happens when we try to build that same select component again, but now with `@headless-ui/react`, the most starred Headless UI library from the bunch?
+Alright, so what happens when we try to build the `PersonSelect` component again, but now with `@headless-ui/react`?
 
 Loading the library and setting up the select (listbox) looks like this:
 
@@ -341,7 +346,7 @@ export const Headless = () => {
 
 ---
 
-Looking at the code, the end result is pretty similar to the “from scratch” example. We focus mainly on UI elements and business logic. The component remains super readable, but we also gain some additional features.
+Looking at the code, the end result is pretty similar to the “from scratch” example. We focus mainly on UI elements and keeping track of the selected person. The component remains super readable, but we also gain some additional features.
 
 ### **Keyboard interactions**
 
@@ -362,7 +367,7 @@ Next, we have the `ListboxOptions` element, which becomes focused upon opening t
 ARIA (Accessible Rich Internet Applications) declarations are added, following the [listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/). This helps screen readers understand and describe the interactive elements on the screen, making the content more accessible to all users.
 
 <aside>
-👉 While these libraries help with describing the component using ARIA roles, ensure that custom or hacky solutions maintain correct ARIA roles. *“No ARIA is better than bad ARIA”.* <sup>[[3]](#sources-3)</sup>
+👉 While these libraries help with describing the component using ARIA roles, ensure that custom solutions maintain correct ARIA roles. *“No ARIA is better than bad ARIA”.* <sup>[[3]](#sources-3)</sup>
 
 </aside>
 
@@ -373,6 +378,8 @@ The default position for the options list is below the currently selected option
 <Video videoKey="collision-aware-positioning" />
 
 These are the kinds of features that take time to implement correctly, but they are also what makes a UI great instead of just good.
+
+Now, onto the next point Headless UI libraries can help us with.
 
 ## Cross browser and device compatibility
 
@@ -418,9 +425,16 @@ Some Headless UI libraries offer (opinionated) solutions for handling things lik
 
 </aside>
 
+Although it’s not immediately visible, we do benefit from these features with our Headless UI implementation of the `PersonSelect` component. We get:
+
+- No unintended hover styles on mobile.
+- Beter “pressed” states.
+
+Finally, let’s take a look at some other ways we can benefit from this Headless UI pattern.
+
 ## Other
 
-I wanted to mention a couple of other headless patterns that do provide functionality but allow you to keep control over styling.
+For lack of a better name, I’ve categorised these into the “other” category. These patterns provide functionality but allow you to keep control over styling and html structure.
 
 ### **Data grids**
 

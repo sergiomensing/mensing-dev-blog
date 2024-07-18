@@ -4,14 +4,58 @@ import { Link } from "./components/link";
 
 import styles from "./page.module.css";
 
+const IconLink = (props: { name: string; icon: string; href: string }) => {
+  return (
+    <Link
+      target="_blank"
+      rel="noopener noreferrer"
+      href={props.href}
+      className={styles["icon-link"]}
+    >
+      <img
+        src={`/icons/${props.icon}`}
+        role="presentation"
+        width={20}
+        height={20}
+        alt={`${props.name} icon`}
+      />
+      {props.name}
+    </Link>
+  );
+};
+
 export default async function Home() {
   const allPosts = await getAllPosts();
 
   return (
     <div className="container">
-      <div className={`${styles.introduction} prose`}>
-        <h1>Hi, i'm Sergio</h1>
-        <p>Bla bla</p>
+      <div className={styles.introduction}>
+        <h1>
+          👋<br />
+          Hi, I'm Sergio
+        </h1>
+        <p>
+          Currently working for{" "}
+          <IconLink
+            name="Arcady"
+            icon="arcady.svg"
+            href="https://www.arcady.nl/"
+          />{" "}
+          helping clients like{" "}
+          <IconLink name="Univé" icon="univé.svg" href="https://unive.nl/" />,{" "}
+          <IconLink
+            name="Shell Recharge"
+            icon="shell-recharge.svg"
+            href="https://www.shell.nl/"
+          />{" "}
+          and{" "}
+          <IconLink
+            name="The Learning Network"
+            icon="tln.jpg"
+            href="https://www.learningnetwork.nl/"
+          />{" "}
+          make the most out of their frontends.
+        </p>
       </div>
       <hr />
       <div className={styles.writing}>
@@ -20,12 +64,12 @@ export default async function Home() {
           {allPosts
             .filter(draftFilter)
             .map(({ slug, frontmatter: { title, description } }) => (
-              <article key={slug} role="listitem" className={styles.post}>
-                <Link href={getPostPath(slug)}>
+              <li key={slug}>
+                <Link href={getPostPath(slug)} className={styles.post}>
                   <h3>{title}</h3>
+                  {description && <p>{description}</p>}
                 </Link>
-                {description && <p>{description}</p>}
-              </article>
+              </li>
             ))}
         </ul>
       </div>

@@ -145,12 +145,5 @@
     & summary {
       cursor: pointer;
     }
-
-    /* Don't know if this belongs here, but on smaller screens, hide the line numbers of code blocks */
-    @media screen and (max-width: 768px) {
-      & [data-bright-theme] [data-bright-ln] {
-        display: none;
-      }
-    }
   }
 }

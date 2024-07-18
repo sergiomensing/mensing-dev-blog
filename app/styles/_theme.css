@@ -1,8 +1,6 @@
 :root {
   /* Font inter is provided by next/font in the root layout */
   --font-body: var(--font-inter);
-
-  --font-display: var(--font-body);
   --font-mono: "Courier New", Courier, monospace;
 
   /* Colors */
@@ -13,11 +11,14 @@
   --text: #0c1018;
   --text-highlight: #0d48c7;
   --text-highlight-hovered: #044be4;
-  --icon-highlight: #0f50dc;
   --text-secondary: #626972;
-  --highlight: #1b63ff;
+
+  --icon-highlight: #0f50dc;
 
   --border: #eaeaea;
+  --border-hovered: #d3d6d8;
+
+  --highlight: #1b63ff;
 }
 
 @media (prefers-color-scheme: dark) {

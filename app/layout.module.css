@@ -6,7 +6,6 @@
 }
 
 .logo {
-  font-family: var(--font-display);
   display: flex;
   align-items: center;
   padding: 0.5rem 0.75rem;
@@ -15,6 +14,7 @@
   border-radius: 6px;
   outline: 0;
   transition: background-color, transform 200ms ease-out;
+  transform-origin: center;
   text-decoration: none;
 
   &[data-hovered] {
@@ -24,7 +24,7 @@
 
   &[data-pressed] {
     background-color: var(--bg-hovered);
-    transform: scale(0.95) translateY(1px);
+    transform: scale(0.98) translateY(1px);
     transition-duration: 80ms;
   }
 
@@ -54,6 +54,7 @@
   border-radius: 6px;
   outline: 0;
   transition: background-color, transform 200ms ease-out;
+  transform-origin: center;
   text-decoration: none;
 
   &[data-hovered] {
@@ -63,7 +64,7 @@
 
   &[data-pressed] {
     background-color: var(--bg-hovered);
-    transform: scale(0.95) translateY(1px);
+    transform: scale(0.98) translateY(1px);
     transition-duration: 80ms;
   }
 

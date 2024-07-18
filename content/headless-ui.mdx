@@ -1,8 +1,8 @@
 ---
 draft: false
 title: "Non-styled component libraries"
-description: "Bring your owns UI design"
-date: "2024-07-01"
+description: "Bring your own UI"
+date: "2024-07-17"
 readingTime: 10
 tags:
   - "UI/UX"
@@ -15,18 +15,12 @@ sources:
     title: "Build accessible web apps with React"
     url: "https://ariakit.org/"
     icon: "ariakit.svg"
-  # - title: "Headless UI"
-  #   url: "https://headlessui.com/"
-  #   icon: "headless-ui.svg"
-  - title: "React Aria"
-    url: "https://react-spectrum.adobe.com/react-aria/"
-    icon: "adobe.svg"
-  # - title: "Reach UI"
-  #   url: "https://reach.tech/"
-  #   icon: "reach-ui.svg"
-  - title: "So You Think You Can Build A Dropdown?"
-    url: "https://www.youtube.com/watch?v=pcMYcjtWwVI"
-    icon: "youtube.svg"
+  - title: "Read Me First"
+    name: "W3"
+    url: "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+    icon: "w3c.svg"
+  - title: "Headless User Interface Components"
+    url: "https://www.merrickchristensen.com/articles/headless-user-interface-components/"
 ---
 
 Imagine your product owner or designer proposes a new feature. A select component where you must be able to select a user and see their avatar and job title.
@@ -50,9 +44,12 @@ Both solutions have their own challenges. Let’s start with the first approach.
 
 Most libraries allow customisation through themes. However, like with good ol’ Bootstrap, there are always recognisable elements that are either unmodifiable or very difficult to change.
 
-If you're like me, you often struggle with the library—overriding styles with hacky solutions and dealing with missing features in the component API. You strive to create the best user experience, but the component library holds you back.
+If you're like me, you often struggle with the embedded component styling. Overriding styles with hacky solutions and dealing with missing features in the component API. You strive to create the best user experience, but the component library holds you back.
 
-It's never a good sign when you battle with a library. Component libraries should save time and effort, not increase it.
+<aside>
+  👉 It's never a good sign when you battle with a library. Component libraries should save time and effort, not
+  increase it.
+</aside>
 
 I gave Material UI a shot to build the mentioned component. Here’s how it turned out:
 
@@ -146,7 +143,7 @@ While the code is acceptable, I’m working against the styling of the component
 You can still recognise Material UI, especially the signature ripple effect indicating a user press. We could try to remove these things, but again, we’d be working against the library.
 
 <aside>
-👉 Depending on the type of application you are building, not having full control over the styling might be beneficial. For internal company applications or proofs of concept, prebuilt libraries can be great. However, for public-facing applications, you probably want more control.
+👉 Depending on the type of application you are building, not having full control over the styling might be beneficial. For company internal applications or proofs of concept, prebuilt libraries can be great. However, for public-facing applications, you probably want more control.
 
 </aside>
 
@@ -165,10 +162,6 @@ Looking at the component, we need to:
 Here’s what I came up with:
 
 <Video videoKey="from-scratch" />
-
-Screen recording of the component.
-
-Pretty neat, right? LGTM. Let’s ship it!
 
 <details>
 <summary>Expand code</summary>
@@ -230,12 +223,14 @@ export const FromScratch = () => {
 
 ---
 
-Not so fast! This component is problematic. It tries to mimic the native `select` look with some custom styling, but the native `select` has plenty of functionality we haven’t considered yet:
+Pretty neat, right? LGTM. Let’s ship it!
 
-- **Keyboard interaction.** In a native `select`, using the arrows will navigate between options. Also you can type to select an option.
-- **Focus management.** What happens when we focus away from the options? The select stays open. This is not what we want.
-- **ARIA and screen reader support.** We’ve created a select, and visually it looks like a select. But nowhere in the code do we say it is a select.
-- **Collision-aware positioning.** By default a select opens on top of the select. But only if there is room on the screen. If there is no more room the position shifts to the top or the bottom depending on where there is space.
+Not so fast! This component has several issues. It attempts to mimic the native `select` element with custom styling but lacks essential functionality:
+
+- **Keyboard interaction.** In a native `select`, you can navigate between options using the arrow keys and type to select an option. Our component doesn't support this.
+- **Focus management.** Options in a native `select` close automatically when focus shifts away. Our component doesn't manage focus at all.
+- **ARIA and screen reader support.** A native `select` element has built-in screen reader support. Our component looks like a select, but it doesn't indicate anywhere in the code that it is a select, affecting accessibility.
+- **Collision-aware positioning.** A native `select` adjusts its position based on available screen space, opening above or below the selected options as needed. Our component doesn't handle this positioning.
 
 Here you can see me trying to click away to close or use the arrow keys to navigate the options. This doesn’t work. Then, when I try to tab away, I start cycling through the options.
 
@@ -265,7 +260,7 @@ _“What does it even do, then?”_ you might ask.
 
 Well, it kinda depends on the library. But the main themes are:
 
-- Common interaction patterns, not provided by the web platform.
+- Common interaction patterns.
 - Cross browser and device compatibility.
 - Other.
 
@@ -273,7 +268,7 @@ Well, it kinda depends on the library. But the main themes are:
 
 These are interaction patterns not provided—or not extensible enough—by the web platform.
 
-An example is the **Combobox**. This common component is not provided by browsers in any way. People have come to expect this pattern when dealing with large datasets and long lists of options. WIA has described the [Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) in detail.
+An example is the Combobox. This common component is not provided by browsers in any way. People have come to expect this pattern when dealing with large datasets and long lists of options. WIA (Web Accessibility Initiative) has described the [Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) in detail.
 
 Another good example is the `select` element, which is [famously not stylable.](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css) If you want to style a select, we need to implement it ourselves.
 
@@ -283,7 +278,7 @@ Another good example is the `select` element, which is [famously not stylable.](
   select, we need to implement it ourselves.
 </aside>
 
----
+### Our example
 
 Alright, so what happens when we try to build that same select component again, but now with `@headless-ui/react`, the most starred Headless UI library from the bunch?
 
@@ -291,7 +286,7 @@ Loading the library and setting up the select (listbox) looks like this:
 
 <Video videoKey="unstyled" />
 
-This might come as a shock, but consider the possibilities here. We don’t have to find hacky ways to override the default styling of a component because we have control over every HTML element and every line of CSS. For now, we can simply reuse the styles from the “build from scratch” example, with some small naming tweaks to align with the components provided by the library.
+There is no styling! This might not be surprising given the title of this blog post, but think of the possibilities. We don't need to use hacky methods to override the default styling of a component because we have complete control over every HTML element and every line of CSS. For now, we can simply reuse the styles from the “build from scratch” example.
 
 <Video videoKey="mouse" />
 
@@ -341,7 +336,7 @@ export const Headless = () => {
 
 ---
 
-Looking at the code, the end result is pretty similar. We focus mainly on UI elements and business logic. The component remains super readable, but we also gain some additional features.
+Looking at the code, the end result is pretty similar to the “from scratch” example. We focus mainly on UI elements and business logic. The component remains super readable, but we also gain some additional features.
 
 ### **Keyboard interactions**
 
@@ -359,10 +354,10 @@ Next, we have the `ListboxOptions` element, which becomes focused upon opening t
 
 ### **ARIA**
 
-ARIA (Accessible Rich Internet Applications) declarations are added. Following the [listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/).
+ARIA (Accessible Rich Internet Applications) declarations are added, following the [listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/). This helps screen readers understand and describe the interactive elements on the screen, making the content more accessible to all users.
 
 <aside>
-👉 While these libraries help with describing the component using ARIA roles, ensure that custom or hacky solutions maintain correct ARIA roles. *“No ARIA is better than bad ARIA”.* [3]
+👉 While these libraries help with describing the component using ARIA roles, ensure that custom or hacky solutions maintain correct ARIA roles. *“No ARIA is better than bad ARIA”.* <sup>[[3]](#sources-3)</sup>
 
 </aside>
 
@@ -405,7 +400,7 @@ I’ll give an example using a simple button. Let’s say we have an outlined bu
 </details>
 It looks good, so let's ship it. But wait, let's test it on a mobile device first.
 
-When testing on a real mobile device (not just shrinking the viewport), we might see some strange behavior we didn't expect. The button goes to its hovered state...
+When testing on a real mobile device (not just shrinking the viewport), we might see some strange behaviour we didn't expect. The button goes to its hovered state...
 
 … video here
 
@@ -441,7 +436,7 @@ From here, we enter the territory of just functionality. Headless UI makes sense
 
 Building good interactions is challenging. Users expect a lot from your components, and you need to accommodate a diverse range of users with different preferences and accessibility needs.
 
-So the next time a Product Owner asks you to build a super complex component, consider to use a Headless component library.
+So the next time a Product Owner asks you to build a complex component, consider to use a Headless component library.
 
 > “Wait for a second, are you advocating a user interface pattern that doesn't have a user interface?”
 >

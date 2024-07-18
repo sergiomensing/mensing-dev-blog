@@ -8,7 +8,6 @@
   /* Colors */
   --bg: #fff;
   --bg-hovered: #eaeef1;
-
   --bg-layer-1: #eaeef1;
 
   --text: #0c1018;
@@ -23,7 +22,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #111111;
-    --text: #fff;
+    --bg: #0c1018;
+    --bg-hovered: #22272e;
+    --bg-layer-1: #22272e;
+
+    --text: #eaeaea;
+    --text-secondary: #899099;
+    --text-highlight: #4d85ff;
+    --text-highlight-hovered: #6e9cff;
+
+    --border: #464749;
   }
 }

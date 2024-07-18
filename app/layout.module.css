@@ -14,13 +14,29 @@
   cursor: pointer;
   border-radius: 6px;
   outline: 0;
+  transition: background-color, transform 200ms ease-out;
+  text-decoration: none;
 
   &[data-hovered] {
     background-color: var(--bg-hovered);
+    transition-duration: 80ms;
+  }
+
+  &[data-pressed] {
+    background-color: var(--bg-hovered);
+    transform: scale(0.95) translateY(1px);
+    transition-duration: 80ms;
   }
 
   &[data-focus-visible] {
-    outline: var(--highlight) auto 2px;
+    outline: 2px solid var(--highlight);
+  }
+
+  & img {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-inline-end: 0.5rem;
+    border-radius: 999px;
   }
 }
 
@@ -37,13 +53,21 @@
   cursor: pointer;
   border-radius: 6px;
   outline: 0;
+  transition: background-color, transform 200ms ease-out;
   text-decoration: none;
 
   &[data-hovered] {
     background-color: var(--bg-hovered);
+    transition-duration: 80ms;
+  }
+
+  &[data-pressed] {
+    background-color: var(--bg-hovered);
+    transform: scale(0.95) translateY(1px);
+    transition-duration: 80ms;
   }
 
   &[data-focus-visible] {
-    outline: var(--highlight) auto 2px;
+    outline: 2px solid var(--highlight);
   }
 }

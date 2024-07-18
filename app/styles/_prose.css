@@ -69,8 +69,7 @@
     }
 
     /* code in the text */
-    & p > code,
-    li > code {
+    & *:is(p, li, summary) > code {
       background: var(--bg-layer-1);
       padding: 0.25em 0.4em;
       border-radius: 4px;
@@ -95,14 +94,18 @@
       outline: 0;
       color: var(--text-highlight);
       text-decoration: none;
+      transition: color, opacity 200ms ease-out;
+      transform-origin: center;
 
       &[data-hovered] {
+        transition-duration: 80ms;
         color: var(--text-highlight-hovered);
         text-decoration: underline;
       }
 
       &[data-pressed] {
         opacity: 0.8;
+        transition-duration: 80ms;
       }
 
       & svg {
@@ -119,6 +122,28 @@
       display: inline;
       transform: translateY(0.1em);
       margin-inline-start: 0.1em;
+    }
+
+    & blockquote {
+      padding: 0.25rem 1rem;
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        width: 4px;
+        height: 100%;
+        border-radius: 999px;
+        display: block;
+        pointer-events: none;
+        background: var(--highlight);
+      }
+    }
+
+    & summary {
+      cursor: pointer;
     }
 
     /* Don't know if this belongs here, but on smaller screens, hide the line numbers of code blocks */

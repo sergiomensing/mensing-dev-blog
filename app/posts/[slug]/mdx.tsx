@@ -8,7 +8,7 @@ import { Link } from "../../components/link";
 import { Heading } from "./heading";
 import { Video } from "./video";
 
-Code.theme = "github-dark";
+Code.theme = "github-dark-dimmed";
 Code.lineNumbers = true;
 
 function CustomLink(props: React.ComponentProps<"a">) {

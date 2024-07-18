@@ -17,6 +17,8 @@
   transform: translateY(0.075em);
   outline: 0;
   border-radius: 6px;
+  transition: background-color, transform 200ms ease-out;
+  transform-origin: center;
 
   & svg {
     width: 0.75em;
@@ -29,7 +31,14 @@
     outline-offset: -2px;
   }
 
+  &[data-pressed] {
+    background: var(--bg-hovered);
+    transform: scale(0.95) translateY(calc(0.075em + 1px));
+    transition-duration: 80ms;
+  }
+
   &[data-hovered] {
+    transition-duration: 80ms;
     background: var(--bg-hovered);
   }
 }

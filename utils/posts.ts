@@ -17,7 +17,7 @@ export const postFrontmatterSchema = z.object({
       z.object({
         title: z.string(),
         url: z.string().url(),
-        icon: z.string(),
+        icon: z.string().optional(),
         name: z.string().optional(),
       }),
     )

@@ -1,5 +1,6 @@
 import { Link } from "@/components/link";
 import { draftFilter, getAllPosts } from "@/posts";
+import { LinkIcon } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "./mdx";
@@ -41,13 +42,18 @@ export default async function PostPage({ params: { slug } }: PostPageProps) {
                   rel="noopener noreferrer"
                   href={source.url}
                 >
-                  <Image
-                    src={`/icons/${source.icon}`}
-                    width={20}
-                    height={20}
-                    alt=""
-                    role="presentation"
-                  />
+                  {source.icon ? (
+                    <Image
+                      src={`/icons/${source.icon}`}
+                      width={20}
+                      height={20}
+                      alt=""
+                      role="presentation"
+                    />
+                  ) : (
+                    <LinkIcon size={16} role="presentation" />
+                  )}
+
                   {source.name && <strong>{source.name}</strong>}
                   <span>{source.title}</span>
                 </Link>

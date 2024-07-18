@@ -24,8 +24,7 @@
   }
 
   & > *:has(img),
-  & > video,
-  & > figure {
+  & > *:is(video, figure, img) {
     grid-column: 1 / -1;
   }
 

@@ -6,6 +6,16 @@ import { notFound } from "next/navigation";
 import { CustomMDX } from "./mdx";
 import styles from "./page.module.css";
 
+export const dynamic = "error";
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export type PostPageProps = {
   params: {
     slug: string;

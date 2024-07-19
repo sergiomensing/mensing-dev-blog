@@ -1,15 +1,21 @@
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@/components/disclosure";
 import { Sandpack } from "@codesandbox/sandpack-react";
 import { evaluate } from "@mdx-js/mdx";
 import { Code } from "bright";
-import { ExternalLink } from "lucide-react";
+import { ChevronDown, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import * as runtime from "react/jsx-runtime";
 import { Link } from "../../components/link";
 import { Heading } from "./heading";
 import { Video } from "./video";
 
-Code.theme = "github-dark-dimmed";
+Code.theme = "github-from-css";
 Code.lineNumbers = true;
+Code.style = { borderRadius: 6 };
 
 function CustomLink(props: React.ComponentProps<"a">) {
   if (props.href?.startsWith("/")) {
@@ -50,6 +56,24 @@ const components = {
   a: CustomLink,
   Sandpack: Sandpack,
   Source: ({ children }) => children,
+  DisclosureButton: (props) => (
+    <DisclosureButton
+      className={`${props.className} disclosure-button`.trim()}
+      {...props}
+    >
+      <ChevronDown />
+      {props.children}
+    </DisclosureButton>
+  ),
+  DisclosurePanel: (props) => (
+    <DisclosurePanel
+      className={`${props.className} disclosure-panel`.trim()}
+      {...props}
+    />
+  ),
+  Disclosure: (props) => (
+    <Disclosure className={`${props.className} disclosure`.trim()} {...props} />
+  ),
 };
 
 export async function CustomMDX(props: { source: string }) {

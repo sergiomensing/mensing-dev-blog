@@ -29,7 +29,8 @@
   font-size: 0.875rem;
   color: inherit;
   outline: 0;
-  transition: background-color, border-color, transform 500ms ease-out;
+  transition: 300ms ease-out;
+  transition-property: background-color border-color transform;
   transform-origin: center;
 
   & img {
@@ -82,7 +83,8 @@
   align-items: flex-start;
   text-decoration: none;
   outline: 2px solid transparent;
-  transition: background-color, transform 500ms ease-out;
+  transition: 300ms ease-out;
+  transition-property: background-color transform;
   padding: 0.5rem 0.75rem;
   transform-origin: center;
   border-radius: 6px;

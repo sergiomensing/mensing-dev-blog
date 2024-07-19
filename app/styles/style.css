@@ -1,4 +1,5 @@
 @import "./_theme.css";
+@import "./_code-highlighter.css";
 @import "./_reset.css";
 
 @layer utilities {

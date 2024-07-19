@@ -17,7 +17,8 @@
   transform: translateY(0.075em);
   outline: 0;
   border-radius: 6px;
-  transition: background-color, transform 200ms ease-out;
+  transition: 200ms ease-out;
+  transition-property: background-color transform;
   transform-origin: center;
 
   & svg {

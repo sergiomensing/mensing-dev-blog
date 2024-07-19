@@ -23,7 +23,7 @@ sources:
     url: "https://www.merrickchristensen.com/articles/headless-user-interface-components/"
 ---
 
-Imagine your product owner or designer proposes a new feature: a select component where you can choose a person and see their avatar and job title. Let's call it the PersonSelect component. It would look something like this:
+Imagine your product owner or designer proposes a new feature: a select component where you can choose a person and see their avatar and job title. Let's call it the `PersonSelect` component. It would look something like this:
 
 <Video videoKey="mouse" />
 
@@ -38,7 +38,7 @@ Both options have their own set of challenges.
 
 Let’s start by discussing the first option, **using a Prebuilt Component**.
 
-When I’m talking about a Prebuilt Component, I’m referring to either a larger component library with various components, like Material UI, or a library/package specifically built to solve a certain problem, like `react-select`.
+When I’m talking about a Prebuilt Component, I’m referring to either a larger component library with various components, like Material UI, or a library/package specifically built to solve a certain problem, like [`react-select`](https://react-select.com/).
 
 Most Prebuilt Components allow customization through themes, configuration files, or changing CSS. But if you're like me, you often struggle with the embedded styling of Prebuilt Components.
 
@@ -49,12 +49,15 @@ I often find myself overriding styles with hacky solutions or dealing with missi
   it.
 </aside>
 
-If we try to build the PersonSelect component with Material UI, we might end up with something like this:
+If we try to build the `PersonSelect` component with Material UI, we might end up with something like this:
 
 <Video videoKey="material" />
 
-<details>
-<summary>Expand code</summary>
+<Disclosure>
+<DisclosureButton>
+Expand code
+</DisclosureButton>
+<DisclosurePanel>
 
 ```tsx
 import { useState } from "react";
@@ -132,7 +135,8 @@ export const ListboxMaterial = () => {
 };
 ```
 
-</details>
+</DisclosurePanel>
+</Disclosure>
 
 ---
 
@@ -150,7 +154,7 @@ But we still have another option to consider.
 
 ### Building from Scratch
 
-Alright, next we can explore building the PersonSelect component from scratch. I already know that the native [`select`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) element [falls short in terms of styling](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css), so we will need to create something custom. How hard can it be?
+Alright, next we can explore building the `PersonSelect` component from scratch. I already know that the native [`select`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) element [falls short in terms of styling](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css), so we will need to create something custom. How hard can it be?
 
 Looking at the component we need to:
 
@@ -162,8 +166,11 @@ Here is what that might look like:
 
 <Video videoKey="from-scratch" />
 
-<details>
-<summary>Expand code</summary>
+<Disclosure>
+<DisclosureButton>
+Expand code
+</DisclosureButton>
+<DisclosurePanel>
 
 ```tsx
 import { useState } from "react";
@@ -218,7 +225,8 @@ export const FromScratch = () => {
 };
 ```
 
-</details>
+</DisclosurePanel>
+</Disclosure>
 
 ---
 
@@ -300,8 +308,11 @@ There is no styling! This might not be surprising given the title of this blog p
 
 <Video videoKey="mouse" />
 
-<details>
-<summary>Expand code</summary>
+<Disclosure>
+<DisclosureButton>
+Expand code
+</DisclosureButton>
+<DisclosurePanel>
 
 ```tsx
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
@@ -342,7 +353,8 @@ export const Headless = () => {
 };
 ```
 
-</details>
+</DisclosurePanel>
+</Disclosure>
 
 ---
 
@@ -391,8 +403,11 @@ I’ll give an example using a simple button. Let’s say we have an outlined bu
 
 <Video videoKey="button-hover" />
 
-<details>
-<summary>This is quite easy to do with the `:hover` CSS attribute.</summary>
+<Disclosure>
+<DisclosureButton>
+This is quite easy to do with the `:hover` CSS attribute.
+</DisclosureButton>
+<DisclosurePanel>
 
 ```css
 .button {
@@ -409,7 +424,9 @@ I’ll give an example using a simple button. Let’s say we have an outlined bu
 }
 ```
 
-</details>
+</DisclosurePanel>
+</Disclosure>
+
 It looks good, so let's ship it. But wait, let's test it on a mobile device first.
 
 When testing on a real mobile device (not just shrinking the viewport), we might see some strange behaviour we didn't expect. The button goes to its hovered state...
@@ -460,3 +477,4 @@ So the next time a Product Owner asks you to build a complex component, consider
 > “Wait for a second, are you advocating a user interface pattern that doesn't have a user interface?”
 >
 > Yes. That is exactly what I'm advocating. <sup>[[4]](#sources-4)</sup>
+> import css from "styled-jsx/css"

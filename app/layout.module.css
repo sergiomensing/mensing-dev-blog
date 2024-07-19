@@ -13,7 +13,8 @@
   cursor: pointer;
   border-radius: 6px;
   outline: 0;
-  transition: background-color, transform 200ms ease-out;
+  transition: 200ms ease-out;
+  transition-property: background-color transform;
   transform-origin: center;
   text-decoration: none;
 
@@ -53,7 +54,8 @@
   cursor: pointer;
   border-radius: 6px;
   outline: 0;
-  transition: background-color, transform 200ms ease-out;
+  transition: 200ms ease-out;
+  transition-property: background-color transform;
   transform-origin: center;
   text-decoration: none;
 

@@ -4,34 +4,36 @@
   --font-mono: "Courier New", Courier, monospace;
 
   /* Colors */
-  --bg: #fff;
-  --bg-hovered: #eaeef1;
-  --bg-layer-1: #eaeef1;
+  --bg: hsl(206, 20%, 100%);
+  --bg-hovered: hsl(206, 20%, 95%);
+  --bg-layer-1: #f0f3f5;
+  --bg-layer-1: hsl(206, 20%, 95%);
+  --bg-layer-2: hsl(206, 22%, 88%);
 
-  --text: #0c1018;
-  --text-highlight: #0d48c7;
-  --text-highlight-hovered: #044be4;
-  --text-secondary: #626972;
+  --text: hsl(220, 33%, 7%);
+  --text-highlight: hsl(221, 88%, 42%);
+  --text-highlight-hovered: hsl(221, 97%, 45%);
+  --text-secondary: hsl(214, 8%, 42%);
 
-  --icon-highlight: #0f50dc;
+  --icon-highlight: hsl(221, 87%, 46%);
 
-  --border: #eaeaea;
-  --border-hovered: #d3d6d8;
+  --border: hsl(204, 5%, 90%);
+  --border-hovered: hsl(204, 6%, 84%);
 
-  --highlight: #1b63ff;
+  --highlight: hsl(221, 100%, 55%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0c1018;
-    --bg-hovered: #22272e;
-    --bg-layer-1: #22272e;
+    --bg: hsl(220, 10%, 7%);
+    --bg-hovered: hsl(215, 15%, 12%);
+    --bg-layer-1: hsl(215, 15%, 12%);
 
-    --text: #eaeaea;
-    --text-secondary: #899099;
-    --text-highlight: #4d85ff;
-    --text-highlight-hovered: #6e9cff;
+    --text: hsl(0, 0%, 92%);
+    --text-secondary: hsl(214, 7%, 57%);
+    --text-highlight: hsl(221, 100%, 69%);
+    --text-highlight-hovered: hsl(221, 100%, 74%);
 
-    --border: #464749;
+    --border: hsl(204, 5%, 20%);
   }
 }

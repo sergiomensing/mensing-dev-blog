@@ -4,7 +4,7 @@ import type { MetadataRoute } from "next";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
-    : "https://mensing.dev";
+    : "https://www.mensing.dev";
 
   const getUrl = (path = "") => `${baseUrl}${path}`;
 

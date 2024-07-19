@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
           marginBottom: 40,
         }}
       >
-        Blogpost
+        Blog post
       </div>
       <div
         style={{

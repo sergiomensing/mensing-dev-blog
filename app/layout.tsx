@@ -13,8 +13,19 @@ import Image from "next/image";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Sergio Mensing",
-  description: "Personal Blog of Sergio Mensing | Mensing.dev",
+  title: {
+    default: "Sergio Mensing",
+    template: "%s | Sergio Mensing",
+  },
+  description: "Personal Blog of a frontend developer.",
+  openGraph: {
+    title: "Sergio Mensing",
+    description: "Personal Blog of a frontend developer.",
+    url: "https://www.mensing.dev/",
+    siteName: "Sergio Mensing",
+    locale: "en_US",
+    type: "website",
+  },
   metadataBase: new URL("https://www.mensing.dev/"),
   robots: {
     index: false,

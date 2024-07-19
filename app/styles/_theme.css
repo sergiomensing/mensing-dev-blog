@@ -5,22 +5,21 @@
 
   /* Colors */
   --bg: hsl(206, 20%, 100%);
-  --bg-hovered: hsl(206, 20%, 95%);
-  --bg-layer-1: #f0f3f5;
+  --bg-hovered: #f0f3f5;
   --bg-layer-1: hsl(206, 20%, 95%);
-  --bg-layer-2: hsl(206, 22%, 88%);
+  --bg-layer-2: #dae1e7;
 
-  --text: hsl(220, 33%, 7%);
-  --text-highlight: hsl(221, 88%, 42%);
+  --text: #0c1018;
+  --text-highlight: #0d49c9;
   --text-highlight-hovered: hsl(221, 97%, 45%);
-  --text-secondary: hsl(214, 8%, 42%);
+  --text-secondary: #636a74;
 
   --icon-highlight: hsl(221, 87%, 46%);
 
   --border: hsl(204, 5%, 90%);
   --border-hovered: hsl(204, 6%, 84%);
 
-  --highlight: hsl(221, 100%, 55%);
+  --highlight: #1a62ff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,12 +27,18 @@
     --bg: hsl(220, 10%, 7%);
     --bg-hovered: hsl(215, 15%, 12%);
     --bg-layer-1: hsl(215, 15%, 12%);
+    --bg-layer-2: hsl(215, 17%, 20%);
 
     --text: hsl(0, 0%, 92%);
     --text-secondary: hsl(214, 7%, 57%);
-    --text-highlight: hsl(221, 100%, 69%);
+    --text-highlight: hsl(221, 100%, 65%);
     --text-highlight-hovered: hsl(221, 100%, 74%);
 
+    --icon-highlight: hsl(221, 100%, 56%);
+
     --border: hsl(204, 5%, 20%);
+    --border-hovered: hsl(204, 6%, 26%);
+
+    --highlight: hsl(221, 100%, 55%);
   }
 }

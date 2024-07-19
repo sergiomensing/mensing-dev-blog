@@ -231,6 +231,10 @@
     & [data-bright-theme] {
       border-radius: 6px;
       border: 1px solid var(--border);
+
+      & code {
+        font-size: 0.75rem;
+      }
     }
   }
 

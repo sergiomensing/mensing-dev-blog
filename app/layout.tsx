@@ -13,8 +13,9 @@ import Image from "next/image";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Mensing.dev",
-  description: "Mensing.dev | Personal Blog",
+  title: "Sergio Mensing",
+  description: "Personal Blog of Sergio Mensing | Mensing.dev",
+  metadataBase: new URL("https://www.mensing.dev/"),
   robots: {
     index: false,
     follow: false,

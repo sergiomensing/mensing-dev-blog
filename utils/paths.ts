@@ -1,3 +1,3 @@
-export type Path = `/posts/${string}`;
+export type Path = `/blog/${string}`;
 
-export const getPostPath = (slug: string) => `/posts/${slug}` satisfies Path;
+export const getPostPath = (slug: string) => `/blog/${slug}` satisfies Path;

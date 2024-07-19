@@ -1,12 +1,48 @@
 import { Link } from "@/components/link";
 import { draftFilter, getAllPosts } from "@/posts";
 import { LinkIcon } from "lucide-react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "./mdx";
 import styles from "./page.module.css";
 
 export const dynamic = "error";
+
+export async function generateMetadata({
+  params,
+}: { params: { slug: string } }) {
+  const post = (await getAllPosts()).find((post) => post.slug === params.slug);
+
+  if (!post) {
+    throw new Error("Post not found");
+  }
+  const { title, date: publishedTime, description } = post.frontmatter;
+  const ogImage = `https://www.mensing.dev/og?title=${title}`;
+
+  return {
+    title: `${post.frontmatter.title} | Sergio Mensing`,
+    description: post.frontmatter.description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      publishedTime,
+      url: `https://www.mensing.dev/blog/${post.slug}`,
+      images: [
+        {
+          url: ogImage,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  } satisfies Metadata;
+}
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();

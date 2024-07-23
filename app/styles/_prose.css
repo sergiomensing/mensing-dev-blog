@@ -69,7 +69,7 @@
     }
 
     /* code in the text */
-    & *:is(p, li, summary) > code {
+    & *:is(p, li, summary, h1, h2, h3) > code {
       background: var(--bg-layer-1);
       padding: 0.25em 0.4em;
       border-radius: 4px;

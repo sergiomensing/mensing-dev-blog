@@ -32,22 +32,22 @@ Most people would consider one of the following two options:
 1. Using a Prebuilt Component.
 2. Build the Component from scratch.
 
-Both options have their own set of challenges.
+Both options have their own set of challenges. Let’s start by discussing the first one.
 
 ### Using a Prebuilt Component
 
-Let’s start by discussing the first option, **using a Prebuilt Component**.
-
-When I’m talking about a Prebuilt Component, I’m referring to either a larger component library with various components, like Material UI, or a library/package specifically built to solve a certain problem, like [`react-select`](https://react-select.com/).
+When I’m talking about a Prebuilt Component, I’m referring to one of two things. Larger component libraries with various components, like [Material UI](https://mui.com/). Or a library/package specifically built to solve a certain problem, like [`react-select`](https://react-select.com/), for a feature complete Select component.
 
 Most Prebuilt Components allow customization through themes, configuration files, or changing CSS. But if you're like me, you often struggle with the embedded styling of Prebuilt Components.
 
-I often find myself overriding styles with hacky solutions or dealing with missing features in the prebuilt component. I want to create the best experience possible for our use case, but the prebuilt component holds me back.
+I find myself overriding styles with hacky solutions or dealing with missing features of the Prebuilt Component. I want to create the best user experience possible for our use case, but the library/package is holding me back.
 
 <aside>
   👉 Most times, it’s not a good sign when you battle with a package. Packages should save time and effort, not increase
   it.
 </aside>
+
+---
 
 If we try to build the `PersonSelect` component with Material UI, we might end up with something like this:
 
@@ -85,6 +85,7 @@ export const CustomSelect = styled(Select<(typeof people)[0]>)(({ theme }) => ({
 export const ListboxMaterial = () => {
   const [selectedPerson, setSelectedPerson] = useState(people[0]);
 
+  // handleOnChange was copied over from the Material UI docs
   const handleOnChange = (event: SelectChangeEvent<(typeof people)[number]>) => {
     const {
       target: { value },
@@ -154,13 +155,13 @@ But we still have another option to consider.
 
 ### Building from Scratch
 
-Alright, next we can explore building the `PersonSelect` component from scratch. I already know that the native [`select`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) element [falls short in terms of styling](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css), so we will need to create something custom. How hard can it be?
+Alright, let's explore building the `PersonSelect` component from scratch. I already know that the native [`select`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) HTML element [falls short in terms of styling](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css), so we will need to create something custom.
 
 Looking at the component we need to:
 
 - Show the currently selected option.
-- Toggle the options list when clicking on the currently selected option.
-- Be able to select another op
+- Toggle the list of options when clicking on the currently selected option.
+- Be able to select another option.
 
 Here is what that might look like:
 
@@ -175,6 +176,8 @@ Expand code
 ```tsx
 import { useState } from "react";
 import { people } from "./data";
+
+import "./listbox.from-scratch.css";
 
 export const FromScratch = () => {
   const [selectedPerson, setSelectedPerson] = useState(people[0]);
@@ -230,7 +233,7 @@ export const FromScratch = () => {
 
 ---
 
-Pretty neat, right? LGTM. Let’s ship it!
+Pretty neat, right? Let’s ship it.
 
 Not so fast! This component has several issues. It attempts to mimic the native `select` element with custom styling but lacks essential functionality:
 
@@ -239,11 +242,11 @@ Not so fast! This component has several issues. It attempts to mimic the native 
 - **ARIA and screen reader support.** A native `select` element has built-in screen reader support. Our component looks like a select, but it doesn't indicate anywhere in the code that it is a select, affecting accessibility.
 - **Collision-aware positioning.** A native `select` adjusts its position based on available screen space, opening above or below the selected options as needed. Our component doesn't handle this positioning.
 
-Here you can see me trying to click away to close or use the arrow keys to navigate the options. This doesn’t work. Then, when I try to tab away, I start cycling through the options.
+Here you can see me trying to click away to close the options, or use the arrow keys to navigate the options. This does not work. Then, when I try to tab away, I start cycling through the options. Very frustrating.
 
 <Video videoKey="nightmare-2" />
 
-We can try to address all these problems but we would end up with a LOT more code. This component will become a headache to test and maintain.
+We can try to address all these problems but we would end up with a LOT more code. This component will become a headache to test and maintain. Suddenly, just using a Prebuilt Component is looking like the better option here.
 
 Building good interaction is really challenging. Users expect a lot from your components, and you need to accommodate a diverse range of users with different preferences and accessibility needs.
 
@@ -272,7 +275,6 @@ Well, it kinda depends on the library. But the main themes are:
 
 - Common interaction patterns.
 - Cross browser and device compatibility.
-- Other.
 
 Let’s dive into those.
 
@@ -280,13 +282,9 @@ Let’s dive into those.
 
 The web support plenty of interaction patterns. For example, a button to press or an input element for entering text.
 
-Headless UI libraries can offer new interaction patterns that the web platform doesn't provide.
+Headless UI libraries can offer new interaction patterns that the web platform doesn't provide. An example of a new component is the Combobox. A Combobox combines an input element and a select element, letting users search through options and select one or more. This component is not provided by browsers in any way. People have come to expect this pattern when dealing with large datasets and long lists of options. The Web Accessibility Initiative (WAI) has described the [Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) in detail.
 
-An example of a new component is the Combobox. A Combobox combines an input element and a select element, letting users search through options and select one or more. This component is not provided by browsers in any way. People have come to expect this pattern when dealing with large datasets and long lists of options. The Web Accessibility Initiative (WAI) has described the [Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) in detail.
-
-Headless UI libraries can also improve existing patterns that are currently not flexible enough.
-
-A good example of an improved component is the Select (also called Listbox) component. This component aims to replace the native select element, which is [famously difficult to style](https://stackoverflow.com/questions/1895476/how-do-i-style-a-select-dropdown-with-only-css), giving you full control over the styling.
+Headless UI libraries can also improve existing patterns that are currently not flexible enough. A good example of an improved component is the Select (also called Listbox) component. This component aims to replace the native select element, which is [difficult to style](https://twitter.com/Una/status/623209608203534338), giving you full control over the styling.
 
 Most Headless UI libraries come with support for comboboxes and listboxes.
 
@@ -358,7 +356,7 @@ export const Headless = () => {
 
 ---
 
-Looking at the code, the end result is pretty similar to the “from scratch” example. We focus mainly on UI elements and keeping track of the selected person. The component remains super readable, but we also gain some additional features.
+Looking at the code, the end result is pretty similar to the “from scratch” example. We focus mainly on UI elements and keeping track of the selected person. The component remains super readable, but we also gained some additional features.
 
 ### **Keyboard interactions**
 
@@ -368,9 +366,7 @@ We can even start searching through the options by typing the first character(s)
 
 ### **Focus management**
 
-There are two focusable areas in this component. First, we have the `ListboxButton` element, which is always visible.
-
-Next, we have the `ListboxOptions` element, which becomes focused upon opening the select. Even when the `ListboxOptions` element is not close to the `ListboxButton` element in the DOM structure, the individual `ListboxOption` elements are not focusable because we can navigate through them using the arrow keys. When the user selects an option, the focus is restored to the `ListboxButton` element.
+There are two focusable areas in this component. We have the `ListboxButton` element, which is always visible and focusable. Next we have the `ListboxOptions` element, which becomes visible and focused upon opening the select. The individual `ListboxOption` elements are not focusable because we can navigate through them using the arrow keys. When the user selects an option, the focus is restored to the `ListboxButton` element.
 
 <Video videoKey="keyboard-navigation-and-focus-management" />
 
@@ -389,7 +385,7 @@ The default position for the options list is below the currently selected option
 
 <Video videoKey="collision-aware-positioning" />
 
-These are the kinds of features that take time to implement correctly, but they are also what makes a UI great instead of just good.
+These are the kinds of features that take time and effort to implement correctly, but they are also what makes a UI great instead of just good.
 
 Now, onto the next point Headless UI libraries can help us with.
 
@@ -427,7 +423,7 @@ This is quite easy to do with the `:hover` CSS attribute.
 </DisclosurePanel>
 </Disclosure>
 
-It looks good, so let's ship it. But wait, let's test it on a mobile device first.
+This looks good, so let's ship it. But wait, let's test it on a mobile device first.
 
 When testing on a real mobile device (not just shrinking the viewport), we might see some strange behaviour we didn't expect. The button goes to its hovered state...
 
@@ -447,24 +443,25 @@ Although it’s not immediately visible, we do benefit from these features with 
 - No unintended hover styles on mobile.
 - Beter “pressed” states.
 
-Finally, let’s take a look at some other ways we can benefit from this Headless UI pattern.
+Finally, let’s take a look at a couple other ways we can benefit from this Headless UI pattern.
 
 ## Other
 
-For lack of a better name, I’ve categorised these into the “other” category. These patterns provide functionality but allow you to keep control over styling and html structure.
+For lack of a better name, I’ve categorised these into the “other” category. These patterns provide functionality but allow you to keep control over styling and HTML structure.
 
 ### **Data grids**
 
 Mostly used in administrative systems, these can become fairly complex. With functionality like sorting, filtering, pinning columns, grouping columns etc…
 
-<aside>
-👉 I really recommend [TanStack Table](https://tanstack.com/table/latest/docs/introduction) for this and encourage you to read their motivation/introduction, which also offers a great explanation of headless UI.
-
-</aside>
+I really recommend [TanStack Table](https://tanstack.com/table/latest/docs/introduction) for this and encourage you to read their motivation/introduction, which also offers a great explanation of headless UI.
 
 ### **Transitions and Animations**
 
-While CSS can handle this, there are cases where its functionality falls short, such as creating an “exit animation” before a component is unmounted.
+While CSS can handle animations, there are cases where its functionality falls short, such as creating an “exit animation” before a component is unmounted. A good example of how this can be solved is the `AnimatePresence` component from [Framer Motion](https://www.framer.com/motion/animate-presence/).
+
+### **Forms**
+
+Forms can be very complex. Conditional fields, validations, having a dynamic amount of fields etc… Two examples: [React Aria](https://react-spectrum.adobe.com/react-aria/forms.html) has built in support for different form components. And [`react-hook-form`](https://react-hook-form.com/) is great for handling complex logic in forms.
 
 ## Conclusion
 

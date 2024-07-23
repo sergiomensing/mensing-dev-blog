@@ -35,7 +35,7 @@ export default async function Home() {
           Hi, I'm Sergio
         </h1>
         <p>
-          Currently working for{" "}
+          Currently working at{" "}
           <IconLink
             name="Arcady"
             icon="arcady.svg"

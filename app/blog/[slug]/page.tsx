@@ -15,8 +15,9 @@ export async function generateMetadata({
   const post = (await getAllPosts()).find((post) => post.slug === params.slug);
 
   if (!post) {
-    throw new Error("Post not found");
+    return notFound();
   }
+
   const { title, date: publishedTime, description } = post.frontmatter;
   const ogImage = `https://www.mensing.dev/og?title=${title}`;
 

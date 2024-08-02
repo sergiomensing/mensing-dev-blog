@@ -12,9 +12,9 @@
   margin-inline-start: -0.75rem;
   cursor: pointer;
   border-radius: 6px;
-  outline: 0;
+  outline: 2px solid transparent;
   transition: 200ms ease-out;
-  transition-property: background-color transform;
+  transition-property: background-color, transform;
   transform-origin: center;
   text-decoration: none;
 
@@ -30,7 +30,7 @@
   }
 
   &[data-focus-visible] {
-    outline: 2px solid var(--highlight);
+    outline-color: var(--highlight);
   }
 
   & img {
@@ -53,9 +53,9 @@
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   border-radius: 6px;
-  outline: 0;
+  outline: 2px solid transparent;
   transition: 200ms ease-out;
-  transition-property: background-color transform;
+  transition-property: background-color, transform;
   transform-origin: center;
   text-decoration: none;
 
@@ -71,6 +71,6 @@
   }
 
   &[data-focus-visible] {
-    outline: 2px solid var(--highlight);
+    outline-color: var(--highlight);
   }
 }

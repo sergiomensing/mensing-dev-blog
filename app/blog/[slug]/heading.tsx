@@ -1,11 +1,29 @@
 "use client";
 
 import { Hash } from "lucide-react";
-import type { PropsWithChildren } from "react";
+import { type PropsWithChildren, isValidElement } from "react";
 import { useHover } from "react-aria";
 import { Link } from "react-aria-components";
 
 import styles from "./heading.module.css";
+
+function getTextContentFromReactNode(
+  node: React.ReactNode,
+): string | undefined {
+  if (typeof node === "string") {
+    return node;
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(getTextContentFromReactNode).join("");
+  }
+
+  if (isValidElement(node) && node.props?.children) {
+    return getTextContentFromReactNode(node.props.children);
+  }
+
+  return undefined;
+}
 
 function slugify(str: string) {
   return str
@@ -24,13 +42,12 @@ export const Heading = ({
 }: PropsWithChildren<{ level: number }>) => {
   const Tag = `h${level}` as keyof JSX.IntrinsicElements;
 
+  const textContent = getTextContentFromReactNode(children);
+  if (!textContent) throw new Error("Heading must have text content");
+
   const { hoverProps, isHovered } = useHover({});
 
-  if (typeof children !== "string") {
-    return <Tag>{children}</Tag>;
-  }
-
-  const slug = slugify(children);
+  const slug = slugify(textContent);
 
   return (
     <Tag id={slug} {...hoverProps} className={styles.heading}>

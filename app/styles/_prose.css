@@ -91,11 +91,11 @@
 
     /* Links */
     & a[data-rac] {
-      outline: 0;
+      outline: 2px solid transparent;
       color: var(--text-highlight);
       text-decoration: none;
       transition: 200ms ease-out;
-      transition-property: color opacity;
+      transition-property: color, opacity;
       transform-origin: center;
 
       &[data-hovered] {
@@ -114,7 +114,7 @@
       }
 
       &[data-focus-visible] {
-        outline: var(--highlight) auto 2px;
+        outline-color: var(--highlight);
       }
     }
 
@@ -160,11 +160,11 @@
       justify-content: flex-start;
       text-align: left;
       gap: 0.5rem;
-      outline: 0;
+      outline: 2px solid transparent;
       cursor: pointer;
       border-radius: 6px;
       transition: 200ms ease-out;
-      transition-property: background-color transform;
+      transition-property: background-color, transform;
       transform-origin: center;
 
       & code {
@@ -196,7 +196,7 @@
       }
 
       &[data-focus-visible] {
-        outline: 2px solid var(--highlight);
+        outline-color: var(--highlight);
       }
 
       & svg {

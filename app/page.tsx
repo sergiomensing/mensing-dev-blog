@@ -28,33 +28,18 @@ export default async function Home() {
   const allPosts = await getAllPosts();
 
   return (
-    <div className="container">
+    <div className={styles.container}>
       <div className={styles.introduction}>
-        <h1>
-          👋<br />
-          Hi, I'm Sergio
-        </h1>
+        <h1>Sergio Mensing</h1>
         <p>
-          Currently working at{" "}
+          Software developer focusing on web technologies. Creating
+          user-friendly software at{" "}
           <IconLink
             name="Arcady"
             icon="arcady.svg"
             href="https://www.arcady.nl/"
-          />{" "}
-          helping clients like{" "}
-          <IconLink name="Univé" icon="univé.svg" href="https://unive.nl/" />,{" "}
-          <IconLink
-            name="Shell Recharge"
-            icon="shell-recharge.svg"
-            href="https://www.shell.nl/"
-          />{" "}
-          and{" "}
-          <IconLink
-            name="The Learning Network"
-            icon="tln.jpg"
-            href="https://www.learningnetwork.nl/"
-          />{" "}
-          make the most out of their frontends.
+          />
+          .
         </p>
       </div>
       <hr />

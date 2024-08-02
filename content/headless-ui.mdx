@@ -27,12 +27,14 @@ Imagine your product owner or designer proposes a new feature: a select componen
 
 <Video videoKey="mouse" />
 
-Most people would consider one of the following two options:
+Most people typically consider one of two options:
 
 1. Using a Prebuilt Component.
 2. Build the Component from scratch.
 
-Both options have their own set of challenges. Let’s start by discussing the first one.
+Each option comes with its own set of challenges. In this article, I'll walk you through these challenges and propose an alternative solution that I believe is better.
+
+Let's begin with the first option.
 
 ### Using a Prebuilt Component
 
@@ -356,7 +358,7 @@ export const Headless = () => {
 
 ---
 
-Looking at the code, the end result is pretty similar to the “from scratch” example. We focus mainly on UI elements and keeping track of the selected person. The component remains super readable, but we also gained some additional features.
+Looking at the code, the end result is pretty similar to the “from scratch” example. We focus mainly on UI elements and keeping track of the selected person. The component remains super readable, but we also gained some additional features. I’ll highlight a few of them:
 
 ### **Keyboard interactions**
 

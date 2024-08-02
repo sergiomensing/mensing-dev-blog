@@ -83,14 +83,14 @@ if (window.matchMedia) {
               />
               Mensing.dev
             </Link>
-            <nav className={styles.nav}>
+            {/* <nav className={styles.nav}>
               <ActiveLink className={styles["nav-link"]} href="/">
                 Home
               </ActiveLink>
               <ActiveLink className={styles["nav-link"]} href="/work">
                 Work
               </ActiveLink>
-            </nav>
+            </nav> */}
           </header>
           <main>{children}</main>
         </ClientProviders>

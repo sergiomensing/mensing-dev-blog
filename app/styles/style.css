@@ -1,6 +1,6 @@
-@import "./_theme.css";
-@import "./_code-highlighter.css";
 @import "./_reset.css";
+@import "./_code-highlighter.css";
+@import "./_theme.css";
 
 @layer utilities {
   .container {

@@ -3,14 +3,18 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClientProviders } from "./client-providers";
-import { ActiveLink } from "./components/active-link";
+// import { ActiveLink } from "./components/active-link";
 import { Link } from "./components/link";
 
 import styles from "./layout.module.css";
 import "./styles/style.css";
 import Image from "next/image";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = Inter({
+  display: "swap",
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -46,7 +50,7 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: This is a safe use of dangerouslySetInnerHTML

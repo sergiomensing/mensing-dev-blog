@@ -11,8 +11,9 @@ export const dynamic = "error";
 
 export async function generateMetadata({
   params,
-}: { params: { slug: string } }) {
-  const post = (await getAllPosts()).find((post) => post.slug === params.slug);
+}: { params: Promise<{ slug: string }> }) {
+  const slug = (await params).slug;
+  const post = (await getAllPosts()).find((post) => post.slug === slug);
 
   if (!post) {
     return notFound();
@@ -54,12 +55,13 @@ export async function generateStaticParams() {
 }
 
 export type PostPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export default async function PostPage({ params: { slug } }: PostPageProps) {
+export default async function PostPage({ params }: PostPageProps) {
+  const { slug } = await params;
   const post = (await getAllPosts()).find((post) => post.slug === slug);
 
   if (!post || !draftFilter(post)) {
@@ -75,6 +77,7 @@ export default async function PostPage({ params: { slug } }: PostPageProps) {
         {description && <p className={styles.description}>{description}</p>}
       </div>
       <article className={`${styles.layout} prose`}>
+        {/* @ts-ignore */}
         <CustomMDX source={post.content} />
       </article>
       {sources && (

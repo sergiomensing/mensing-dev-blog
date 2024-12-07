@@ -14,6 +14,16 @@ const nextConfig = {
       },
     ];
   },
+  redirects() {
+    return [
+      {
+        source: "/qr/mama-2024",
+        permanent: false,
+        destination:
+          "https://drive.google.com/file/d/1IE-wdW6WApetzwlEd70fYCSoVIOdSXMB/view?usp=sharing",
+      },
+    ];
+  },
 };
 
 const ContentSecurityPolicy = `

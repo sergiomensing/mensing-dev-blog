@@ -16,7 +16,10 @@
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0.5rem, 1fr) minmax(auto, 60ch) minmax(0.5rem, 1fr);
+  grid-template-columns: minmax(0.5rem, 1fr) minmax(auto, 60ch) minmax(
+      0.5rem,
+      1fr
+    );
 
   & > * {
     grid-column: 2;

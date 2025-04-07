@@ -18,8 +18,9 @@ function getTextContentFromReactNode(
     return node.map(getTextContentFromReactNode).join("");
   }
 
-  if (isValidElement(node) && node.props?.children) {
-    return getTextContentFromReactNode(node.props.children);
+  const props = isValidElement(node) ? (node?.props as PropsWithChildren) : {};
+  if (props.children) {
+    return getTextContentFromReactNode(props.children);
   }
 
   return undefined;
@@ -40,7 +41,7 @@ export const Heading = ({
   children,
   level,
 }: PropsWithChildren<{ level: number }>) => {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+  const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
   const textContent = getTextContentFromReactNode(children);
   if (!textContent) throw new Error("Heading must have text content");

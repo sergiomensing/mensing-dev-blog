@@ -6,7 +6,11 @@ import { useInView } from "react-intersection-observer";
 export const Video = ({
   videoKey,
   caption,
-}: { videoKey: string; caption?: string; autoPlay?: boolean }) => {
+}: {
+  videoKey: string;
+  caption?: string;
+  autoPlay?: boolean;
+}) => {
   const ref = useRef<HTMLVideoElement | null>(null);
 
   const observer = useInView({

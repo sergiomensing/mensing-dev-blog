@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getPostPath } from "@/paths";
 import { draftFilter, getAllPosts } from "@/posts";
 import { Link } from "./components/link";
@@ -12,7 +13,7 @@ const IconLink = (props: { name: string; icon: string; href: string }) => {
       href={props.href}
       className={styles["icon-link"]}
     >
-      <img
+      <Image
         src={`/icons/${props.icon}`}
         role="presentation"
         width={20}

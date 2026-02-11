@@ -1,9 +1,9 @@
-import { Link } from "@/components/link";
-import { draftFilter, getAllPosts } from "@/posts";
 import { LinkIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Link } from "@/components/link";
+import { draftFilter, getAllPosts } from "@/posts";
 import { CustomMDX } from "./mdx";
 import styles from "./page.module.css";
 
@@ -11,7 +11,9 @@ export const dynamic = "error";
 
 export async function generateMetadata({
   params,
-}: { params: Promise<{ slug: string }> }) {
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const slug = (await params).slug;
   const post = (await getAllPosts()).find((post) => post.slug === slug);
 

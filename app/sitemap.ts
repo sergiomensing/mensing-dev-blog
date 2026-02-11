@@ -1,5 +1,5 @@
-import { getAllPosts } from "@/posts";
 import type { MetadataRoute } from "next";
+import { getAllPosts } from "@/posts";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.VERCEL_URL

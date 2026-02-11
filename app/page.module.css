@@ -66,6 +66,18 @@
   }
 }
 
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+  padding-inline: 0.25rem;
+  padding-block: 0.125rem;
+  margin-block: -0.125rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
 .writing {
   display: grid;
   gap: 2rem;

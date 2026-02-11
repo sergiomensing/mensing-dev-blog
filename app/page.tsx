@@ -32,14 +32,18 @@ export default async function Home() {
       <div className={styles.introduction}>
         <h1>Sergio Mensing</h1>
         <p>
-          Software developer focusing on web technologies. Creating
-          user-friendly software at{" "}
+          Software developer focusing on web technologies. Created user-friendly
+          software at{" "}
           <IconLink
             name="Arcady"
             icon="arcady.svg"
             href="https://www.arcady.nl/"
           />
-          .
+          , now{" "}
+          <span className={styles.tag}>
+            <span aria-hidden="true">🌎</span> traveling
+          </span>{" "}
+          Latin America.
         </p>
       </div>
       <hr />

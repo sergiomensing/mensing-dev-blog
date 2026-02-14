@@ -55,7 +55,7 @@
     border-color: var(--border-hovered);
   }
 
-  &[data-pressed] {
+  &[data-pressed]:active {
     background-color: var(--bg-hovered);
     transform: scale(0.98) translateY(calc(0.25rem + 1px));
     transition-duration: 80ms;
@@ -114,7 +114,7 @@
     transition-duration: 80ms;
   }
 
-  &[data-pressed] {
+  &[data-pressed]:active {
     background-color: var(--bg-hovered);
     transform: scale(0.99) translateY(1px);
     transition-duration: 80ms;

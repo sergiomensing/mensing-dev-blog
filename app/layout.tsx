@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { ClientProviders } from "./client-providers";
 // import { ActiveLink } from "./components/active-link";
 import { Link } from "./components/link";
@@ -10,10 +10,10 @@ import styles from "./layout.module.css";
 import "./styles/style.css";
 import Image from "next/image";
 
-const inter = Inter({
+const inter = localFont({
+  src: "./fonts/Inter-VariableFont_slnt,wght.ttf",
   display: "swap",
   variable: "--font-inter",
-  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {

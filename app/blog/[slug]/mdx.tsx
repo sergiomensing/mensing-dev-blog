@@ -1,14 +1,14 @@
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from "@/components/disclosure";
 import { Sandpack } from "@codesandbox/sandpack-react";
 import { evaluate } from "@mdx-js/mdx";
 import { Code } from "bright";
 import { ChevronDown, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import * as runtime from "react/jsx-runtime";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@/components/disclosure";
 import { Link } from "../../components/link";
 import { Heading } from "./heading";
 import { Video } from "./video";

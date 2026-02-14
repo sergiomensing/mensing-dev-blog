@@ -1,6 +1,7 @@
 @import "./_reset.css";
 @import "./_code-highlighter.css";
 @import "./_theme.css";
+@import "./_prose.css";
 
 @layer utilities {
   .container {
@@ -24,5 +25,3 @@
     height: auto;
   }
 }
-
-@import "./_prose";
